@@ -61,6 +61,7 @@ def main_worker(args, cfg):
         log_dir = osp.dirname(args.test_folder)
         sys.stdout = Logger(osp.join(log_dir, log_name))
     print("==========\nArgs:{}\n==========".format(args))
+    print("Feature enhancer: {}".format(cfg.MODEL.FEATURE_ENHANCER.NAME))
     log_res_name='log_res.txt'
     logger_res=Logger_res(osp.join(args.logs_dir, log_res_name))
     
@@ -431,7 +432,7 @@ if __name__ == '__main__':
     parser.add_argument('--logs-dir', type=str, metavar='PATH',
                         default=osp.join('../logs/try'))
 
-    parser.add_argument('--config_file', type=str, default='config/base.yml',
+    parser.add_argument('--config_file', type=str, default='config/fuse.yml',
                         help="config_file")
   
     parser.add_argument('--test_folder', type=str, default=None, help="test the models in a file")

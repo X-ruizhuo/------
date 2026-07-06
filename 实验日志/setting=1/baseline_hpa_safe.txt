@@ -1,0 +1,427 @@
+==========
+Args:Namespace(AF_weight=1.0, MODEL='50x', batch_size=64, config_file='config/hpa_full.yml', data_dir='/home/xiong_project/data/PRID/', epochs=60, epochs0=80, eval_epoch=100, evaluate=False, height=256, logs_dir='logs-hpa-full-setting1/', lr=0.008, middle_test=False, milestones=[30], momentum=0.9, num_instances=4, optimizer='SGD', print_freq=200, resume=None, seed=24, set_zero=False, setting=1, test_folder=None, trans_feat=True, warmup_step=10, weight_anti=1, weight_decay=0.0001, weight_discri=0.007, weight_trans=100, weight_transx=0.0005, width=128, workers=8)
+==========
+Feature enhancer: hpa
++---------------------------+--------+------------+---------+
+|            set            | images | identities | cameras |
++---------------------------+--------+------------+---------+
+| IncrementalSamples4market |        |            |         |
+|           train           | 12936  |    751     |    6    |
+|           query           |  3368  |    750     |    6    |
+|          gallery          | 15913  |    751     |    6    |
++---------------------------+--------+------------+---------+
++--------------------------------+--------+------------+---------+
+|              set               | images | identities | cameras |
++--------------------------------+--------+------------+---------+
+| IncrementalSamples4subcuhksysu |        |            |         |
+|             train              |  4374  |    942     |    1    |
+|             query              |  2900  |    2900    |    1    |
+|            gallery             |  5447  |    2900    |    1    |
++--------------------------------+--------+------------+---------+
++-------------------------+--------+------------+---------+
+|           set           | images | identities | cameras |
++-------------------------+--------+------------+---------+
+| IncrementalSamples4duke |        |            |         |
+|          train          | 16522  |    702     |    8    |
+|          query          |  2228  |    702     |    8    |
+|         gallery         | 17661  |    1110    |    8    |
++-------------------------+--------+------------+---------+
++---------------------------+--------+------------+---------+
+|            set            | images | identities | cameras |
++---------------------------+--------+------------+---------+
+| IncrementalSamples4msmt17 |        |            |         |
+|           train           | 30248  |    1041    |    15   |
+|           query           | 11659  |    3060    |    15   |
+|          gallery          | 82161  |    3060    |    15   |
++---------------------------+--------+------------+---------+
++---------------------------+--------+------------+---------+
+|            set            | images | identities | cameras |
++---------------------------+--------+------------+---------+
+| IncrementalSamples4cuhk03 |        |            |         |
+|           train           |  7368  |    767     |    2    |
+|           query           |  1400  |    700     |    2    |
+|          gallery          |  5328  |    700     |    2    |
++---------------------------+--------+------------+---------+
++---------------------------+--------+------------+---------+
+|            set            | images | identities | cameras |
++---------------------------+--------+------------+---------+
+| IncrementalSamples4cuhk01 |        |            |         |
+|           train           |  1940  |    485     |    2    |
+|           query           |  972   |    486     |    1    |
+|          gallery          |  972   |    486     |    1    |
++---------------------------+--------+------------+---------+
++---------------------------+--------+------------+---------+
+|            set            | images | identities | cameras |
++---------------------------+--------+------------+---------+
+| IncrementalSamples4cuhk02 |        |            |         |
+|           train           |  6308  |    1577    |    8    |
+|           query           |  478   |    239     |    1    |
+|          gallery          |  478   |    239     |    1    |
++---------------------------+--------+------------+---------+
++-------------------------+--------+------------+---------+
+|           set           | images | identities | cameras |
++-------------------------+--------+------------+---------+
+| IncrementalSamples4grid |        |            |         |
+|          train          |  250   |    125     |    6    |
+|          query          |  125   |    125     |    5    |
+|         gallery         |  900   |    126     |    5    |
++-------------------------+--------+------------+---------+
+/home/xiong_project/data/PRID/SenseReID/test_gallery
++------------------------------+--------+------------+---------+
+|             set              | images | identities | cameras |
++------------------------------+--------+------------+---------+
+| IncrementalSamples4sensereid |        |            |         |
+|            train             |   0    |     0      |    0    |
+|            query             |   0    |     0      |    0    |
+|           gallery            |   0    |     0      |    0    |
++------------------------------+--------+------------+---------+
++--------------------------+--------+------------+---------+
+|           set            | images | identities | cameras |
++--------------------------+--------+------------+---------+
+| IncrementalSamples4viper |        |            |         |
+|          train           |   0    |     0      |    0    |
+|          query           |   0    |     0      |    0    |
+|         gallery          |   0    |     0      |    0    |
++--------------------------+--------+------------+---------+
++--------------------------+--------+------------+---------+
+|           set            | images | identities | cameras |
++--------------------------+--------+------------+---------+
+| IncrementalSamples4ilids |        |            |         |
+|          train           |  236   |     59     |    8    |
+|          query           |   60   |     60     |    8    |
+|         gallery          |   60   |     60     |    6    |
++--------------------------+--------+------------+---------+
++-------------------------+--------+------------+---------+
+|           set           | images | identities | cameras |
++-------------------------+--------+------------+---------+
+| IncrementalSamples4prid |        |            |         |
+|          train          |  200   |    100     |    2    |
+|          query          |  100   |    100     |    1    |
+|         gallery         |  649   |    649     |    1    |
++-------------------------+--------+------------+---------+
+using resnet50 as a backbone
+===========building ResNet===========
+param fc.weight in pre-trained model does not exist in this model.base
+param fc.bias in pre-trained model does not exist in this model.base
+using soft triplet loss for training
+####### starting training on market1501 #######
+Epoch: [0][143/143]	Time 0.695 (0.551)	Loss_ce 6.181 (6.202)	Loss_tp 0.731 (0.733)	Loss_ca 0.000 (0.000)	Loss_cr 0.000 (0.000)	Loss_ad 0.000 (0.000)	Loss_dc 0.000 (0.000)	
+Epoch: [1][143/143]	Time 0.528 (0.504)	Loss_ce 5.728 (5.964)	Loss_tp 0.729 (0.727)	Loss_ca 0.000 (0.000)	Loss_cr 0.000 (0.000)	Loss_ad 0.000 (0.000)	Loss_dc 0.000 (0.000)	
+Epoch: [2][143/143]	Time 0.484 (0.525)	Loss_ce 4.213 (4.897)	Loss_tp 0.714 (0.716)	Loss_ca 0.000 (0.000)	Loss_cr 0.000 (0.000)	Loss_ad 0.000 (0.000)	Loss_dc 0.000 (0.000)	
+Epoch: [3][143/143]	Time 0.442 (0.529)	Loss_ce 2.189 (3.055)	Loss_tp 0.674 (0.696)	Loss_ca 0.000 (0.000)	Loss_cr 0.000 (0.000)	Loss_ad 0.000 (0.000)	Loss_dc 0.000 (0.000)	
+Epoch: [4][143/143]	Time 0.429 (0.512)	Loss_ce 0.883 (1.552)	Loss_tp 0.665 (0.681)	Loss_ca 0.000 (0.000)	Loss_cr 0.000 (0.000)	Loss_ad 0.000 (0.000)	Loss_dc 0.000 (0.000)	
+Epoch: [5][143/143]	Time 0.528 (0.570)	Loss_ce 0.703 (0.795)	Loss_tp 0.674 (0.672)	Loss_ca 0.000 (0.000)	Loss_cr 0.000 (0.000)	Loss_ad 0.000 (0.000)	Loss_dc 0.000 (0.000)	
+Epoch: [6][143/143]	Time 0.526 (0.643)	Loss_ce 0.292 (0.470)	Loss_tp 0.666 (0.667)	Loss_ca 0.000 (0.000)	Loss_cr 0.000 (0.000)	Loss_ad 0.000 (0.000)	Loss_dc 0.000 (0.000)	
+Epoch: [7][143/143]	Time 0.516 (0.628)	Loss_ce 0.216 (0.310)	Loss_tp 0.656 (0.664)	Loss_ca 0.000 (0.000)	Loss_cr 0.000 (0.000)	Loss_ad 0.000 (0.000)	Loss_dc 0.000 (0.000)	
+Epoch: [8][143/143]	Time 0.538 (0.639)	Loss_ce 0.172 (0.224)	Loss_tp 0.666 (0.661)	Loss_ca 0.000 (0.000)	Loss_cr 0.000 (0.000)	Loss_ad 0.000 (0.000)	Loss_dc 0.000 (0.000)	
+Epoch: [9][143/143]	Time 0.438 (0.553)	Loss_ce 0.180 (0.187)	Loss_tp 0.655 (0.659)	Loss_ca 0.000 (0.000)	Loss_cr 0.000 (0.000)	Loss_ad 0.000 (0.000)	Loss_dc 0.000 (0.000)	
+Epoch: [10][143/143]	Time 0.480 (0.518)	Loss_ce 0.109 (0.164)	Loss_tp 0.646 (0.659)	Loss_ca 0.000 (0.000)	Loss_cr 0.000 (0.000)	Loss_ad 0.000 (0.000)	Loss_dc 0.000 (0.000)	
+Epoch: [11][143/143]	Time 0.690 (0.557)	Loss_ce 0.128 (0.140)	Loss_tp 0.659 (0.657)	Loss_ca 0.000 (0.000)	Loss_cr 0.000 (0.000)	Loss_ad 0.000 (0.000)	Loss_dc 0.000 (0.000)	
+Epoch: [12][143/143]	Time 0.880 (0.568)	Loss_ce 0.183 (0.119)	Loss_tp 0.645 (0.654)	Loss_ca 0.000 (0.000)	Loss_cr 0.000 (0.000)	Loss_ad 0.000 (0.000)	Loss_dc 0.000 (0.000)	
+Epoch: [13][143/143]	Time 0.598 (0.540)	Loss_ce 0.174 (0.110)	Loss_tp 0.646 (0.651)	Loss_ca 0.000 (0.000)	Loss_cr 0.000 (0.000)	Loss_ad 0.000 (0.000)	Loss_dc 0.000 (0.000)	
+Epoch: [14][143/143]	Time 0.430 (0.561)	Loss_ce 0.039 (0.094)	Loss_tp 0.646 (0.649)	Loss_ca 0.000 (0.000)	Loss_cr 0.000 (0.000)	Loss_ad 0.000 (0.000)	Loss_dc 0.000 (0.000)	
+Epoch: [15][143/143]	Time 0.450 (0.534)	Loss_ce 0.059 (0.083)	Loss_tp 0.651 (0.648)	Loss_ca 0.000 (0.000)	Loss_cr 0.000 (0.000)	Loss_ad 0.000 (0.000)	Loss_dc 0.000 (0.000)	
+Epoch: [16][143/143]	Time 0.428 (0.550)	Loss_ce 0.049 (0.066)	Loss_tp 0.646 (0.646)	Loss_ca 0.000 (0.000)	Loss_cr 0.000 (0.000)	Loss_ad 0.000 (0.000)	Loss_dc 0.000 (0.000)	
+Epoch: [17][143/143]	Time 0.620 (0.544)	Loss_ce 0.014 (0.065)	Loss_tp 0.634 (0.643)	Loss_ca 0.000 (0.000)	Loss_cr 0.000 (0.000)	Loss_ad 0.000 (0.000)	Loss_dc 0.000 (0.000)	
+Epoch: [18][143/143]	Time 0.429 (0.551)	Loss_ce 0.029 (0.058)	Loss_tp 0.629 (0.640)	Loss_ca 0.000 (0.000)	Loss_cr 0.000 (0.000)	Loss_ad 0.000 (0.000)	Loss_dc 0.000 (0.000)	
+Epoch: [19][143/143]	Time 0.429 (0.537)	Loss_ce 0.134 (0.063)	Loss_tp 0.635 (0.640)	Loss_ca 0.000 (0.000)	Loss_cr 0.000 (0.000)	Loss_ad 0.000 (0.000)	Loss_dc 0.000 (0.000)	
+Epoch: [20][143/143]	Time 0.504 (0.539)	Loss_ce 0.027 (0.056)	Loss_tp 0.627 (0.636)	Loss_ca 0.000 (0.000)	Loss_cr 0.000 (0.000)	Loss_ad 0.000 (0.000)	Loss_dc 0.000 (0.000)	
+Epoch: [21][143/143]	Time 0.429 (0.531)	Loss_ce 0.115 (0.051)	Loss_tp 0.629 (0.634)	Loss_ca 0.000 (0.000)	Loss_cr 0.000 (0.000)	Loss_ad 0.000 (0.000)	Loss_dc 0.000 (0.000)	
+Epoch: [22][143/143]	Time 0.509 (0.541)	Loss_ce 0.096 (0.053)	Loss_tp 0.639 (0.633)	Loss_ca 0.000 (0.000)	Loss_cr 0.000 (0.000)	Loss_ad 0.000 (0.000)	Loss_dc 0.000 (0.000)	
+Epoch: [23][143/143]	Time 0.522 (0.535)	Loss_ce 0.042 (0.050)	Loss_tp 0.639 (0.631)	Loss_ca 0.000 (0.000)	Loss_cr 0.000 (0.000)	Loss_ad 0.000 (0.000)	Loss_dc 0.000 (0.000)	
+Epoch: [24][143/143]	Time 0.435 (0.563)	Loss_ce 0.025 (0.044)	Loss_tp 0.641 (0.630)	Loss_ca 0.000 (0.000)	Loss_cr 0.000 (0.000)	Loss_ad 0.000 (0.000)	Loss_dc 0.000 (0.000)	
+Epoch: [25][143/143]	Time 0.479 (0.550)	Loss_ce 0.018 (0.044)	Loss_tp 0.617 (0.629)	Loss_ca 0.000 (0.000)	Loss_cr 0.000 (0.000)	Loss_ad 0.000 (0.000)	Loss_dc 0.000 (0.000)	
+Epoch: [26][143/143]	Time 0.432 (0.560)	Loss_ce 0.010 (0.042)	Loss_tp 0.614 (0.625)	Loss_ca 0.000 (0.000)	Loss_cr 0.000 (0.000)	Loss_ad 0.000 (0.000)	Loss_dc 0.000 (0.000)	
+Epoch: [27][143/143]	Time 0.429 (0.555)	Loss_ce 0.008 (0.046)	Loss_tp 0.604 (0.626)	Loss_ca 0.000 (0.000)	Loss_cr 0.000 (0.000)	Loss_ad 0.000 (0.000)	Loss_dc 0.000 (0.000)	
+Epoch: [28][143/143]	Time 0.535 (0.540)	Loss_ce 0.035 (0.040)	Loss_tp 0.616 (0.625)	Loss_ca 0.000 (0.000)	Loss_cr 0.000 (0.000)	Loss_ad 0.000 (0.000)	Loss_dc 0.000 (0.000)	
+Epoch: [29][143/143]	Time 0.431 (0.564)	Loss_ce 0.014 (0.038)	Loss_tp 0.612 (0.621)	Loss_ca 0.000 (0.000)	Loss_cr 0.000 (0.000)	Loss_ad 0.000 (0.000)	Loss_dc 0.000 (0.000)	
+Epoch: [30][143/143]	Time 0.428 (0.539)	Loss_ce 0.030 (0.031)	Loss_tp 0.632 (0.617)	Loss_ca 0.000 (0.000)	Loss_cr 0.000 (0.000)	Loss_ad 0.000 (0.000)	Loss_dc 0.000 (0.000)	
+Epoch: [31][143/143]	Time 0.777 (0.550)	Loss_ce 0.027 (0.022)	Loss_tp 0.616 (0.615)	Loss_ca 0.000 (0.000)	Loss_cr 0.000 (0.000)	Loss_ad 0.000 (0.000)	Loss_dc 0.000 (0.000)	
+Epoch: [32][143/143]	Time 0.456 (0.566)	Loss_ce 0.045 (0.027)	Loss_tp 0.621 (0.615)	Loss_ca 0.000 (0.000)	Loss_cr 0.000 (0.000)	Loss_ad 0.000 (0.000)	Loss_dc 0.000 (0.000)	
+Epoch: [33][143/143]	Time 0.621 (0.552)	Loss_ce 0.014 (0.024)	Loss_tp 0.607 (0.614)	Loss_ca 0.000 (0.000)	Loss_cr 0.000 (0.000)	Loss_ad 0.000 (0.000)	Loss_dc 0.000 (0.000)	
+Epoch: [34][143/143]	Time 0.429 (0.534)	Loss_ce 0.009 (0.023)	Loss_tp 0.602 (0.612)	Loss_ca 0.000 (0.000)	Loss_cr 0.000 (0.000)	Loss_ad 0.000 (0.000)	Loss_dc 0.000 (0.000)	
+Epoch: [35][143/143]	Time 0.554 (0.575)	Loss_ce 0.013 (0.020)	Loss_tp 0.605 (0.610)	Loss_ca 0.000 (0.000)	Loss_cr 0.000 (0.000)	Loss_ad 0.000 (0.000)	Loss_dc 0.000 (0.000)	
+Epoch: [36][143/143]	Time 0.423 (0.544)	Loss_ce 0.007 (0.024)	Loss_tp 0.625 (0.610)	Loss_ca 0.000 (0.000)	Loss_cr 0.000 (0.000)	Loss_ad 0.000 (0.000)	Loss_dc 0.000 (0.000)	
+Epoch: [37][143/143]	Time 0.477 (0.543)	Loss_ce 0.003 (0.018)	Loss_tp 0.604 (0.609)	Loss_ca 0.000 (0.000)	Loss_cr 0.000 (0.000)	Loss_ad 0.000 (0.000)	Loss_dc 0.000 (0.000)	
+Epoch: [38][143/143]	Time 0.428 (0.552)	Loss_ce 0.056 (0.022)	Loss_tp 0.602 (0.608)	Loss_ca 0.000 (0.000)	Loss_cr 0.000 (0.000)	Loss_ad 0.000 (0.000)	Loss_dc 0.000 (0.000)	
+Epoch: [39][143/143]	Time 0.429 (0.519)	Loss_ce 0.005 (0.020)	Loss_tp 0.602 (0.608)	Loss_ca 0.000 (0.000)	Loss_cr 0.000 (0.000)	Loss_ad 0.000 (0.000)	Loss_dc 0.000 (0.000)	
+Epoch: [40][143/143]	Time 0.721 (0.532)	Loss_ce 0.005 (0.021)	Loss_tp 0.576 (0.607)	Loss_ca 0.000 (0.000)	Loss_cr 0.000 (0.000)	Loss_ad 0.000 (0.000)	Loss_dc 0.000 (0.000)	
+Epoch: [41][143/143]	Time 0.436 (0.529)	Loss_ce 0.004 (0.021)	Loss_tp 0.604 (0.606)	Loss_ca 0.000 (0.000)	Loss_cr 0.000 (0.000)	Loss_ad 0.000 (0.000)	Loss_dc 0.000 (0.000)	
+Epoch: [42][143/143]	Time 0.431 (0.551)	Loss_ce 0.027 (0.017)	Loss_tp 0.628 (0.606)	Loss_ca 0.000 (0.000)	Loss_cr 0.000 (0.000)	Loss_ad 0.000 (0.000)	Loss_dc 0.000 (0.000)	
+Epoch: [43][143/143]	Time 0.429 (0.540)	Loss_ce 0.012 (0.019)	Loss_tp 0.612 (0.606)	Loss_ca 0.000 (0.000)	Loss_cr 0.000 (0.000)	Loss_ad 0.000 (0.000)	Loss_dc 0.000 (0.000)	
+Epoch: [44][143/143]	Time 0.430 (0.539)	Loss_ce 0.012 (0.021)	Loss_tp 0.614 (0.604)	Loss_ca 0.000 (0.000)	Loss_cr 0.000 (0.000)	Loss_ad 0.000 (0.000)	Loss_dc 0.000 (0.000)	
+Epoch: [45][143/143]	Time 0.428 (0.525)	Loss_ce 0.028 (0.019)	Loss_tp 0.624 (0.604)	Loss_ca 0.000 (0.000)	Loss_cr 0.000 (0.000)	Loss_ad 0.000 (0.000)	Loss_dc 0.000 (0.000)	
+Epoch: [46][143/143]	Time 0.488 (0.543)	Loss_ce 0.034 (0.018)	Loss_tp 0.599 (0.603)	Loss_ca 0.000 (0.000)	Loss_cr 0.000 (0.000)	Loss_ad 0.000 (0.000)	Loss_dc 0.000 (0.000)	
+Epoch: [47][143/143]	Time 0.429 (0.546)	Loss_ce 0.021 (0.019)	Loss_tp 0.599 (0.603)	Loss_ca 0.000 (0.000)	Loss_cr 0.000 (0.000)	Loss_ad 0.000 (0.000)	Loss_dc 0.000 (0.000)	
+Epoch: [48][143/143]	Time 0.492 (0.549)	Loss_ce 0.008 (0.018)	Loss_tp 0.595 (0.602)	Loss_ca 0.000 (0.000)	Loss_cr 0.000 (0.000)	Loss_ad 0.000 (0.000)	Loss_dc 0.000 (0.000)	
+Epoch: [49][143/143]	Time 0.430 (0.558)	Loss_ce 0.010 (0.019)	Loss_tp 0.588 (0.603)	Loss_ca 0.000 (0.000)	Loss_cr 0.000 (0.000)	Loss_ad 0.000 (0.000)	Loss_dc 0.000 (0.000)	
+Epoch: [50][143/143]	Time 0.665 (0.525)	Loss_ce 0.006 (0.017)	Loss_tp 0.606 (0.601)	Loss_ca 0.000 (0.000)	Loss_cr 0.000 (0.000)	Loss_ad 0.000 (0.000)	Loss_dc 0.000 (0.000)	
+Epoch: [51][143/143]	Time 0.451 (0.505)	Loss_ce 0.004 (0.019)	Loss_tp 0.593 (0.602)	Loss_ca 0.000 (0.000)	Loss_cr 0.000 (0.000)	Loss_ad 0.000 (0.000)	Loss_dc 0.000 (0.000)	
+Epoch: [52][143/143]	Time 0.447 (0.523)	Loss_ce 0.013 (0.019)	Loss_tp 0.615 (0.602)	Loss_ca 0.000 (0.000)	Loss_cr 0.000 (0.000)	Loss_ad 0.000 (0.000)	Loss_dc 0.000 (0.000)	
+Epoch: [53][143/143]	Time 0.568 (0.519)	Loss_ce 0.010 (0.019)	Loss_tp 0.596 (0.602)	Loss_ca 0.000 (0.000)	Loss_cr 0.000 (0.000)	Loss_ad 0.000 (0.000)	Loss_dc 0.000 (0.000)	
+Epoch: [54][143/143]	Time 0.545 (0.534)	Loss_ce 0.009 (0.018)	Loss_tp 0.596 (0.599)	Loss_ca 0.000 (0.000)	Loss_cr 0.000 (0.000)	Loss_ad 0.000 (0.000)	Loss_dc 0.000 (0.000)	
+Epoch: [55][143/143]	Time 0.428 (0.535)	Loss_ce 0.005 (0.019)	Loss_tp 0.607 (0.601)	Loss_ca 0.000 (0.000)	Loss_cr 0.000 (0.000)	Loss_ad 0.000 (0.000)	Loss_dc 0.000 (0.000)	
+Epoch: [56][143/143]	Time 0.867 (0.555)	Loss_ce 0.006 (0.019)	Loss_tp 0.587 (0.599)	Loss_ca 0.000 (0.000)	Loss_cr 0.000 (0.000)	Loss_ad 0.000 (0.000)	Loss_dc 0.000 (0.000)	
+Epoch: [57][143/143]	Time 0.428 (0.537)	Loss_ce 0.021 (0.018)	Loss_tp 0.598 (0.599)	Loss_ca 0.000 (0.000)	Loss_cr 0.000 (0.000)	Loss_ad 0.000 (0.000)	Loss_dc 0.000 (0.000)	
+Epoch: [58][143/143]	Time 0.430 (0.507)	Loss_ce 0.008 (0.016)	Loss_tp 0.622 (0.600)	Loss_ca 0.000 (0.000)	Loss_cr 0.000 (0.000)	Loss_ad 0.000 (0.000)	Loss_dc 0.000 (0.000)	
+Epoch: [59][143/143]	Time 0.429 (0.505)	Loss_ce 0.005 (0.020)	Loss_tp 0.610 (0.599)	Loss_ca 0.000 (0.000)	Loss_cr 0.000 (0.000)	Loss_ad 0.000 (0.000)	Loss_dc 0.000 (0.000)	
+Epoch: [60][143/143]	Time 0.523 (0.530)	Loss_ce 0.007 (0.022)	Loss_tp 0.568 (0.597)	Loss_ca 0.000 (0.000)	Loss_cr 0.000 (0.000)	Loss_ad 0.000 (0.000)	Loss_dc 0.000 (0.000)	
+Epoch: [61][143/143]	Time 0.511 (0.521)	Loss_ce 0.005 (0.020)	Loss_tp 0.597 (0.600)	Loss_ca 0.000 (0.000)	Loss_cr 0.000 (0.000)	Loss_ad 0.000 (0.000)	Loss_dc 0.000 (0.000)	
+Epoch: [62][143/143]	Time 0.459 (0.521)	Loss_ce 0.011 (0.015)	Loss_tp 0.594 (0.596)	Loss_ca 0.000 (0.000)	Loss_cr 0.000 (0.000)	Loss_ad 0.000 (0.000)	Loss_dc 0.000 (0.000)	
+Epoch: [63][143/143]	Time 0.465 (0.525)	Loss_ce 0.064 (0.020)	Loss_tp 0.588 (0.599)	Loss_ca 0.000 (0.000)	Loss_cr 0.000 (0.000)	Loss_ad 0.000 (0.000)	Loss_dc 0.000 (0.000)	
+Epoch: [64][143/143]	Time 0.588 (0.539)	Loss_ce 0.029 (0.018)	Loss_tp 0.600 (0.596)	Loss_ca 0.000 (0.000)	Loss_cr 0.000 (0.000)	Loss_ad 0.000 (0.000)	Loss_dc 0.000 (0.000)	
+Epoch: [65][143/143]	Time 0.455 (0.551)	Loss_ce 0.006 (0.022)	Loss_tp 0.597 (0.598)	Loss_ca 0.000 (0.000)	Loss_cr 0.000 (0.000)	Loss_ad 0.000 (0.000)	Loss_dc 0.000 (0.000)	
+Epoch: [66][143/143]	Time 0.454 (0.536)	Loss_ce 0.082 (0.019)	Loss_tp 0.618 (0.598)	Loss_ca 0.000 (0.000)	Loss_cr 0.000 (0.000)	Loss_ad 0.000 (0.000)	Loss_dc 0.000 (0.000)	
+Epoch: [67][143/143]	Time 0.454 (0.511)	Loss_ce 0.021 (0.017)	Loss_tp 0.594 (0.596)	Loss_ca 0.000 (0.000)	Loss_cr 0.000 (0.000)	Loss_ad 0.000 (0.000)	Loss_dc 0.000 (0.000)	
+Epoch: [68][143/143]	Time 0.610 (0.496)	Loss_ce 0.132 (0.017)	Loss_tp 0.614 (0.595)	Loss_ca 0.000 (0.000)	Loss_cr 0.000 (0.000)	Loss_ad 0.000 (0.000)	Loss_dc 0.000 (0.000)	
+Epoch: [69][143/143]	Time 0.599 (0.502)	Loss_ce 0.055 (0.017)	Loss_tp 0.622 (0.594)	Loss_ca 0.000 (0.000)	Loss_cr 0.000 (0.000)	Loss_ad 0.000 (0.000)	Loss_dc 0.000 (0.000)	
+Epoch: [70][143/143]	Time 0.438 (0.493)	Loss_ce 0.040 (0.017)	Loss_tp 0.600 (0.594)	Loss_ca 0.000 (0.000)	Loss_cr 0.000 (0.000)	Loss_ad 0.000 (0.000)	Loss_dc 0.000 (0.000)	
+Epoch: [71][143/143]	Time 0.442 (0.486)	Loss_ce 0.017 (0.016)	Loss_tp 0.596 (0.593)	Loss_ca 0.000 (0.000)	Loss_cr 0.000 (0.000)	Loss_ad 0.000 (0.000)	Loss_dc 0.000 (0.000)	
+Epoch: [72][143/143]	Time 0.430 (0.500)	Loss_ce 0.013 (0.016)	Loss_tp 0.611 (0.592)	Loss_ca 0.000 (0.000)	Loss_cr 0.000 (0.000)	Loss_ad 0.000 (0.000)	Loss_dc 0.000 (0.000)	
+Epoch: [73][143/143]	Time 0.452 (0.499)	Loss_ce 0.009 (0.016)	Loss_tp 0.601 (0.594)	Loss_ca 0.000 (0.000)	Loss_cr 0.000 (0.000)	Loss_ad 0.000 (0.000)	Loss_dc 0.000 (0.000)	
+Epoch: [74][143/143]	Time 0.481 (0.482)	Loss_ce 0.017 (0.020)	Loss_tp 0.582 (0.594)	Loss_ca 0.000 (0.000)	Loss_cr 0.000 (0.000)	Loss_ad 0.000 (0.000)	Loss_dc 0.000 (0.000)	
+Epoch: [75][143/143]	Time 0.473 (0.493)	Loss_ce 0.007 (0.017)	Loss_tp 0.595 (0.591)	Loss_ca 0.000 (0.000)	Loss_cr 0.000 (0.000)	Loss_ad 0.000 (0.000)	Loss_dc 0.000 (0.000)	
+Epoch: [76][143/143]	Time 0.431 (0.492)	Loss_ce 0.011 (0.016)	Loss_tp 0.578 (0.592)	Loss_ca 0.000 (0.000)	Loss_cr 0.000 (0.000)	Loss_ad 0.000 (0.000)	Loss_dc 0.000 (0.000)	
+Epoch: [77][143/143]	Time 0.430 (0.488)	Loss_ce 0.006 (0.016)	Loss_tp 0.601 (0.592)	Loss_ca 0.000 (0.000)	Loss_cr 0.000 (0.000)	Loss_ad 0.000 (0.000)	Loss_dc 0.000 (0.000)	
+Epoch: [78][143/143]	Time 0.502 (0.489)	Loss_ce 0.005 (0.018)	Loss_tp 0.591 (0.592)	Loss_ca 0.000 (0.000)	Loss_cr 0.000 (0.000)	Loss_ad 0.000 (0.000)	Loss_dc 0.000 (0.000)	
+Epoch: [79][143/143]	Time 0.567 (0.496)	Loss_ce 0.009 (0.018)	Loss_tp 0.606 (0.592)	Loss_ca 0.000 (0.000)	Loss_cr 0.000 (0.000)	Loss_ad 0.000 (0.000)	Loss_dc 0.000 (0.000)	
+Save Features:  19281
+using soft triplet loss for training
+####### starting training on cuhk_sysu #######
+Epoch: [0][34/34]	Time 0.714 (0.729)	Loss_ce 1.095 (1.760)	Loss_tp 0.652 (0.660)	Loss_ca 0.076 (0.077)	Loss_cr 0.003 (0.004)	Loss_ad 0.448 (0.423)	Loss_dc 0.001 (0.001)	
+Epoch: [1][34/34]	Time 0.641 (0.710)	Loss_ce 0.728 (1.007)	Loss_tp 0.671 (0.656)	Loss_ca 0.075 (0.075)	Loss_cr 0.003 (0.003)	Loss_ad 0.486 (0.456)	Loss_dc 0.001 (0.001)	
+Epoch: [2][34/34]	Time 0.627 (0.690)	Loss_ce 0.619 (0.635)	Loss_tp 0.651 (0.653)	Loss_ca 0.073 (0.073)	Loss_cr 0.002 (0.003)	Loss_ad 0.453 (0.475)	Loss_dc 0.001 (0.001)	
+Epoch: [3][34/34]	Time 0.790 (0.698)	Loss_ce 0.276 (0.453)	Loss_tp 0.642 (0.650)	Loss_ca 0.071 (0.071)	Loss_cr 0.002 (0.002)	Loss_ad 0.474 (0.481)	Loss_dc 0.001 (0.001)	
+Epoch: [4][34/34]	Time 0.693 (0.706)	Loss_ce 0.192 (0.352)	Loss_tp 0.636 (0.644)	Loss_ca 0.065 (0.067)	Loss_cr 0.002 (0.002)	Loss_ad 0.503 (0.485)	Loss_dc 0.001 (0.001)	
+Epoch: [5][34/34]	Time 0.624 (0.712)	Loss_ce 0.095 (0.285)	Loss_tp 0.622 (0.642)	Loss_ca 0.065 (0.065)	Loss_cr 0.002 (0.002)	Loss_ad 0.489 (0.476)	Loss_dc 0.001 (0.001)	
+Epoch: [6][34/34]	Time 0.654 (0.699)	Loss_ce 0.249 (0.268)	Loss_tp 0.625 (0.638)	Loss_ca 0.064 (0.065)	Loss_cr 0.001 (0.001)	Loss_ad 0.461 (0.479)	Loss_dc 0.001 (0.001)	
+Epoch: [7][34/34]	Time 0.646 (0.740)	Loss_ce 0.130 (0.209)	Loss_tp 0.643 (0.638)	Loss_ca 0.065 (0.064)	Loss_cr 0.002 (0.001)	Loss_ad 0.486 (0.480)	Loss_dc 0.001 (0.001)	
+Epoch: [8][34/34]	Time 0.811 (0.764)	Loss_ce 0.180 (0.197)	Loss_tp 0.629 (0.634)	Loss_ca 0.064 (0.064)	Loss_cr 0.001 (0.001)	Loss_ad 0.470 (0.481)	Loss_dc 0.001 (0.001)	
+Epoch: [9][34/34]	Time 0.988 (0.732)	Loss_ce 0.135 (0.164)	Loss_tp 0.623 (0.635)	Loss_ca 0.064 (0.064)	Loss_cr 0.002 (0.001)	Loss_ad 0.471 (0.478)	Loss_dc 0.001 (0.001)	
+Epoch: [10][34/34]	Time 0.866 (0.766)	Loss_ce 0.082 (0.140)	Loss_tp 0.626 (0.632)	Loss_ca 0.064 (0.064)	Loss_cr 0.002 (0.001)	Loss_ad 0.467 (0.475)	Loss_dc 0.001 (0.001)	
+Epoch: [11][34/34]	Time 0.628 (0.709)	Loss_ce 0.146 (0.124)	Loss_tp 0.632 (0.628)	Loss_ca 0.064 (0.064)	Loss_cr 0.002 (0.001)	Loss_ad 0.468 (0.472)	Loss_dc 0.001 (0.001)	
+Epoch: [12][34/34]	Time 0.654 (0.735)	Loss_ce 0.049 (0.130)	Loss_tp 0.623 (0.632)	Loss_ca 0.064 (0.064)	Loss_cr 0.001 (0.001)	Loss_ad 0.498 (0.472)	Loss_dc 0.001 (0.001)	
+Epoch: [13][34/34]	Time 0.628 (0.723)	Loss_ce 0.052 (0.117)	Loss_tp 0.614 (0.629)	Loss_ca 0.064 (0.064)	Loss_cr 0.001 (0.001)	Loss_ad 0.499 (0.470)	Loss_dc 0.001 (0.001)	
+Epoch: [14][34/34]	Time 0.679 (0.739)	Loss_ce 0.051 (0.089)	Loss_tp 0.620 (0.622)	Loss_ca 0.064 (0.064)	Loss_cr 0.001 (0.001)	Loss_ad 0.455 (0.467)	Loss_dc 0.001 (0.001)	
+Epoch: [15][34/34]	Time 0.843 (0.725)	Loss_ce 0.057 (0.084)	Loss_tp 0.604 (0.624)	Loss_ca 0.064 (0.064)	Loss_cr 0.001 (0.001)	Loss_ad 0.469 (0.466)	Loss_dc 0.001 (0.001)	
+Epoch: [16][34/34]	Time 0.750 (0.711)	Loss_ce 0.071 (0.086)	Loss_tp 0.608 (0.624)	Loss_ca 0.064 (0.064)	Loss_cr 0.001 (0.001)	Loss_ad 0.446 (0.464)	Loss_dc 0.001 (0.001)	
+Epoch: [17][34/34]	Time 0.625 (0.708)	Loss_ce 0.176 (0.076)	Loss_tp 0.627 (0.621)	Loss_ca 0.064 (0.064)	Loss_cr 0.002 (0.001)	Loss_ad 0.435 (0.460)	Loss_dc 0.001 (0.001)	
+Epoch: [18][34/34]	Time 0.668 (0.732)	Loss_ce 0.132 (0.069)	Loss_tp 0.617 (0.618)	Loss_ca 0.064 (0.064)	Loss_cr 0.001 (0.001)	Loss_ad 0.442 (0.461)	Loss_dc 0.001 (0.001)	
+Epoch: [19][34/34]	Time 0.632 (0.690)	Loss_ce 0.108 (0.065)	Loss_tp 0.639 (0.625)	Loss_ca 0.063 (0.063)	Loss_cr 0.001 (0.001)	Loss_ad 0.450 (0.458)	Loss_dc 0.001 (0.001)	
+Epoch: [20][34/34]	Time 0.623 (0.681)	Loss_ce 0.035 (0.068)	Loss_tp 0.596 (0.620)	Loss_ca 0.063 (0.063)	Loss_cr 0.001 (0.001)	Loss_ad 0.466 (0.457)	Loss_dc 0.001 (0.001)	
+Epoch: [21][34/34]	Time 0.630 (0.705)	Loss_ce 0.123 (0.062)	Loss_tp 0.628 (0.618)	Loss_ca 0.063 (0.063)	Loss_cr 0.001 (0.001)	Loss_ad 0.439 (0.457)	Loss_dc 0.001 (0.001)	
+Epoch: [22][34/34]	Time 0.676 (0.727)	Loss_ce 0.024 (0.062)	Loss_tp 0.606 (0.617)	Loss_ca 0.064 (0.063)	Loss_cr 0.002 (0.001)	Loss_ad 0.458 (0.457)	Loss_dc 0.001 (0.001)	
+Epoch: [23][34/34]	Time 0.720 (0.722)	Loss_ce 0.075 (0.061)	Loss_tp 0.618 (0.617)	Loss_ca 0.063 (0.063)	Loss_cr 0.002 (0.001)	Loss_ad 0.455 (0.453)	Loss_dc 0.001 (0.001)	
+Epoch: [24][34/34]	Time 0.774 (0.714)	Loss_ce 0.046 (0.059)	Loss_tp 0.624 (0.617)	Loss_ca 0.062 (0.063)	Loss_cr 0.001 (0.001)	Loss_ad 0.468 (0.454)	Loss_dc 0.001 (0.001)	
+Epoch: [25][34/34]	Time 0.626 (0.714)	Loss_ce 0.103 (0.060)	Loss_tp 0.621 (0.616)	Loss_ca 0.062 (0.063)	Loss_cr 0.001 (0.001)	Loss_ad 0.452 (0.453)	Loss_dc 0.001 (0.001)	
+Epoch: [26][34/34]	Time 0.823 (0.837)	Loss_ce 0.102 (0.053)	Loss_tp 0.627 (0.615)	Loss_ca 0.062 (0.063)	Loss_cr 0.001 (0.001)	Loss_ad 0.469 (0.455)	Loss_dc 0.001 (0.001)	
+Epoch: [27][34/34]	Time 0.906 (0.793)	Loss_ce 0.019 (0.053)	Loss_tp 0.587 (0.614)	Loss_ca 0.062 (0.063)	Loss_cr 0.001 (0.001)	Loss_ad 0.454 (0.450)	Loss_dc 0.001 (0.001)	
+Epoch: [28][34/34]	Time 0.675 (0.734)	Loss_ce 0.052 (0.046)	Loss_tp 0.614 (0.613)	Loss_ca 0.063 (0.062)	Loss_cr 0.001 (0.001)	Loss_ad 0.438 (0.450)	Loss_dc 0.001 (0.001)	
+Epoch: [29][34/34]	Time 0.628 (0.718)	Loss_ce 0.021 (0.046)	Loss_tp 0.608 (0.614)	Loss_ca 0.062 (0.062)	Loss_cr 0.001 (0.001)	Loss_ad 0.463 (0.450)	Loss_dc 0.001 (0.001)	
+Epoch: [30][34/34]	Time 0.624 (0.714)	Loss_ce 0.019 (0.051)	Loss_tp 0.607 (0.615)	Loss_ca 0.062 (0.062)	Loss_cr 0.001 (0.001)	Loss_ad 0.461 (0.447)	Loss_dc 0.001 (0.001)	
+Epoch: [31][34/34]	Time 0.672 (0.716)	Loss_ce 0.066 (0.034)	Loss_tp 0.606 (0.611)	Loss_ca 0.063 (0.062)	Loss_cr 0.002 (0.001)	Loss_ad 0.437 (0.447)	Loss_dc 0.001 (0.001)	
+Epoch: [32][34/34]	Time 0.701 (0.710)	Loss_ce 0.029 (0.040)	Loss_tp 0.619 (0.611)	Loss_ca 0.062 (0.062)	Loss_cr 0.001 (0.001)	Loss_ad 0.436 (0.446)	Loss_dc 0.001 (0.001)	
+Epoch: [33][34/34]	Time 0.729 (0.732)	Loss_ce 0.039 (0.047)	Loss_tp 0.595 (0.613)	Loss_ca 0.063 (0.062)	Loss_cr 0.002 (0.001)	Loss_ad 0.447 (0.443)	Loss_dc 0.001 (0.001)	
+Epoch: [34][34/34]	Time 0.630 (0.738)	Loss_ce 0.054 (0.043)	Loss_tp 0.611 (0.613)	Loss_ca 0.062 (0.062)	Loss_cr 0.001 (0.001)	Loss_ad 0.437 (0.441)	Loss_dc 0.001 (0.001)	
+Epoch: [35][34/34]	Time 0.659 (0.712)	Loss_ce 0.066 (0.044)	Loss_tp 0.639 (0.610)	Loss_ca 0.062 (0.062)	Loss_cr 0.001 (0.001)	Loss_ad 0.422 (0.443)	Loss_dc 0.001 (0.001)	
+Epoch: [36][34/34]	Time 0.636 (0.789)	Loss_ce 0.029 (0.042)	Loss_tp 0.616 (0.612)	Loss_ca 0.062 (0.062)	Loss_cr 0.001 (0.001)	Loss_ad 0.453 (0.444)	Loss_dc 0.001 (0.001)	
+Epoch: [37][34/34]	Time 0.636 (0.805)	Loss_ce 0.036 (0.042)	Loss_tp 0.600 (0.611)	Loss_ca 0.062 (0.062)	Loss_cr 0.001 (0.001)	Loss_ad 0.437 (0.442)	Loss_dc 0.001 (0.001)	
+Epoch: [38][34/34]	Time 0.961 (0.812)	Loss_ce 0.021 (0.037)	Loss_tp 0.621 (0.611)	Loss_ca 0.062 (0.062)	Loss_cr 0.001 (0.001)	Loss_ad 0.446 (0.440)	Loss_dc 0.001 (0.001)	
+Epoch: [39][34/34]	Time 1.125 (0.770)	Loss_ce 0.014 (0.041)	Loss_tp 0.614 (0.610)	Loss_ca 0.062 (0.062)	Loss_cr 0.001 (0.001)	Loss_ad 0.442 (0.438)	Loss_dc 0.001 (0.001)	
+Epoch: [40][34/34]	Time 0.922 (0.802)	Loss_ce 0.043 (0.037)	Loss_tp 0.612 (0.611)	Loss_ca 0.062 (0.062)	Loss_cr 0.001 (0.001)	Loss_ad 0.423 (0.439)	Loss_dc 0.001 (0.001)	
+Epoch: [41][34/34]	Time 0.629 (0.796)	Loss_ce 0.049 (0.036)	Loss_tp 0.613 (0.609)	Loss_ca 0.062 (0.062)	Loss_cr 0.001 (0.001)	Loss_ad 0.430 (0.443)	Loss_dc 0.001 (0.001)	
+Epoch: [42][34/34]	Time 0.634 (0.797)	Loss_ce 0.022 (0.042)	Loss_tp 0.613 (0.611)	Loss_ca 0.062 (0.062)	Loss_cr 0.001 (0.001)	Loss_ad 0.446 (0.437)	Loss_dc 0.001 (0.001)	
+Epoch: [43][34/34]	Time 1.167 (0.826)	Loss_ce 0.034 (0.038)	Loss_tp 0.619 (0.612)	Loss_ca 0.063 (0.062)	Loss_cr 0.001 (0.001)	Loss_ad 0.425 (0.438)	Loss_dc 0.001 (0.001)	
+Epoch: [44][34/34]	Time 0.630 (0.758)	Loss_ce 0.040 (0.035)	Loss_tp 0.617 (0.611)	Loss_ca 0.062 (0.062)	Loss_cr 0.001 (0.001)	Loss_ad 0.437 (0.439)	Loss_dc 0.001 (0.001)	
+Epoch: [45][34/34]	Time 0.630 (0.822)	Loss_ce 0.026 (0.038)	Loss_tp 0.609 (0.609)	Loss_ca 0.062 (0.062)	Loss_cr 0.001 (0.001)	Loss_ad 0.436 (0.437)	Loss_dc 0.001 (0.001)	
+Epoch: [46][34/34]	Time 0.878 (0.843)	Loss_ce 0.012 (0.037)	Loss_tp 0.610 (0.607)	Loss_ca 0.062 (0.062)	Loss_cr 0.001 (0.001)	Loss_ad 0.439 (0.438)	Loss_dc 0.001 (0.001)	
+Epoch: [47][34/34]	Time 0.804 (0.845)	Loss_ce 0.021 (0.039)	Loss_tp 0.604 (0.612)	Loss_ca 0.062 (0.062)	Loss_cr 0.001 (0.001)	Loss_ad 0.434 (0.436)	Loss_dc 0.001 (0.001)	
+Epoch: [48][34/34]	Time 1.316 (0.812)	Loss_ce 0.023 (0.038)	Loss_tp 0.590 (0.612)	Loss_ca 0.062 (0.062)	Loss_cr 0.002 (0.001)	Loss_ad 0.436 (0.437)	Loss_dc 0.001 (0.001)	
+Epoch: [49][34/34]	Time 0.813 (0.845)	Loss_ce 0.051 (0.037)	Loss_tp 0.628 (0.607)	Loss_ca 0.062 (0.062)	Loss_cr 0.001 (0.001)	Loss_ad 0.431 (0.439)	Loss_dc 0.001 (0.001)	
+Epoch: [50][34/34]	Time 0.861 (0.857)	Loss_ce 0.041 (0.038)	Loss_tp 0.623 (0.609)	Loss_ca 0.062 (0.062)	Loss_cr 0.001 (0.001)	Loss_ad 0.444 (0.437)	Loss_dc 0.001 (0.001)	
+Epoch: [51][34/34]	Time 1.021 (0.824)	Loss_ce 0.051 (0.042)	Loss_tp 0.611 (0.609)	Loss_ca 0.062 (0.062)	Loss_cr 0.001 (0.001)	Loss_ad 0.417 (0.439)	Loss_dc 0.001 (0.001)	
+Epoch: [52][34/34]	Time 0.654 (0.852)	Loss_ce 0.058 (0.034)	Loss_tp 0.610 (0.608)	Loss_ca 0.061 (0.062)	Loss_cr 0.001 (0.001)	Loss_ad 0.438 (0.439)	Loss_dc 0.001 (0.001)	
+Epoch: [53][34/34]	Time 0.817 (0.823)	Loss_ce 0.016 (0.038)	Loss_tp 0.596 (0.609)	Loss_ca 0.062 (0.062)	Loss_cr 0.001 (0.001)	Loss_ad 0.440 (0.436)	Loss_dc 0.001 (0.001)	
+Epoch: [54][34/34]	Time 0.622 (0.857)	Loss_ce 0.046 (0.036)	Loss_tp 0.598 (0.608)	Loss_ca 0.062 (0.062)	Loss_cr 0.001 (0.001)	Loss_ad 0.418 (0.435)	Loss_dc 0.001 (0.001)	
+Epoch: [55][34/34]	Time 0.801 (0.778)	Loss_ce 0.038 (0.035)	Loss_tp 0.594 (0.610)	Loss_ca 0.062 (0.062)	Loss_cr 0.001 (0.001)	Loss_ad 0.452 (0.436)	Loss_dc 0.001 (0.001)	
+Epoch: [56][34/34]	Time 0.772 (0.888)	Loss_ce 0.021 (0.036)	Loss_tp 0.589 (0.609)	Loss_ca 0.062 (0.062)	Loss_cr 0.001 (0.001)	Loss_ad 0.442 (0.437)	Loss_dc 0.001 (0.001)	
+Epoch: [57][34/34]	Time 0.767 (0.859)	Loss_ce 0.020 (0.035)	Loss_tp 0.585 (0.609)	Loss_ca 0.062 (0.062)	Loss_cr 0.001 (0.001)	Loss_ad 0.439 (0.437)	Loss_dc 0.001 (0.001)	
+Epoch: [58][34/34]	Time 0.729 (0.847)	Loss_ce 0.077 (0.038)	Loss_tp 0.601 (0.606)	Loss_ca 0.063 (0.062)	Loss_cr 0.001 (0.001)	Loss_ad 0.445 (0.432)	Loss_dc 0.001 (0.001)	
+Epoch: [59][34/34]	Time 1.029 (0.910)	Loss_ce 0.016 (0.034)	Loss_tp 0.590 (0.610)	Loss_ca 0.062 (0.062)	Loss_cr 0.001 (0.001)	Loss_ad 0.446 (0.435)	Loss_dc 0.001 (0.001)	
+module.classifier.weight ...
+Save Features:  8347
+Old Gallery Feature Updated to:  logs-hpa-full-setting1/market1501_features.pth.tar
+=================================================================================
+Results on market1501
+Mean AP: 69.6%
+CMC Scores:
+  top-1          85.6%
+  top-5          94.4%
+  top-10         96.2%
+Results on cuhk_sysu
+Mean AP: 80.6%
+CMC Scores:
+  top-1          82.9%
+  top-5          90.5%
+  top-10         93.1%
+Results on market1501
+Mean AP: 10.2%
+CMC Scores:
+  top-1          15.0%
+  top-5          33.2%
+  top-10         45.2%
+Results on cuhk_sysu
+Mean AP: 80.6%
+CMC Scores:
+  top-1          82.9%
+  top-5          90.5%
+  top-10         93.1%
+Average mAP on Seen dataset: 75.1%
+Average R1 on Seen dataset: 84.2%
+market1501		cuhk_sysu		|Average	|
+|69.6/85.6	|80.6/82.9	|75.1/84.2	|
+Average mAP on unSeen dataset: 45.4%
+Average R1 on unSeen dataset: 48.9%
+market1501	cuhk_sysu	|Average	|
+|10.2/15.0	|80.6/82.9	|45.4/48.9	|
+using soft triplet loss for training
+####### starting training on dukemtmc #######
+Epoch: [0][172/172]	Time 0.739 (0.837)	Loss_ce 2.903 (3.744)	Loss_tp 0.696 (0.703)	Loss_ca 0.060 (0.061)	Loss_cr 0.001 (0.001)	Loss_ad 0.488 (0.479)	Loss_dc 0.001 (0.001)	
+Epoch: [1][172/172]	Time 1.023 (0.879)	Loss_ce 1.331 (2.066)	Loss_tp 0.675 (0.689)	Loss_ca 0.061 (0.060)	Loss_cr 0.001 (0.001)	Loss_ad 0.510 (0.512)	Loss_dc 0.001 (0.001)	
+Epoch: [2][172/172]	Time 0.717 (0.853)	Loss_ce 0.795 (1.152)	Loss_tp 0.683 (0.676)	Loss_ca 0.059 (0.060)	Loss_cr 0.001 (0.001)	Loss_ad 0.522 (0.516)	Loss_dc 0.001 (0.001)	
+Epoch: [3][172/172]	Time 0.908 (0.820)	Loss_ce 0.693 (0.712)	Loss_tp 0.675 (0.672)	Loss_ca 0.059 (0.060)	Loss_cr 0.001 (0.001)	Loss_ad 0.510 (0.512)	Loss_dc 0.001 (0.001)	
+Epoch: [4][172/172]	Time 0.674 (0.872)	Loss_ce 0.416 (0.472)	Loss_tp 0.666 (0.667)	Loss_ca 0.059 (0.059)	Loss_cr 0.001 (0.001)	Loss_ad 0.488 (0.502)	Loss_dc 0.001 (0.001)	
+Epoch: [5][172/172]	Time 0.896 (0.831)	Loss_ce 0.466 (0.342)	Loss_tp 0.664 (0.664)	Loss_ca 0.060 (0.059)	Loss_cr 0.001 (0.001)	Loss_ad 0.484 (0.496)	Loss_dc 0.001 (0.001)	
+Epoch: [6][172/172]	Time 0.889 (0.786)	Loss_ce 0.194 (0.271)	Loss_tp 0.663 (0.663)	Loss_ca 0.059 (0.059)	Loss_cr 0.001 (0.001)	Loss_ad 0.478 (0.490)	Loss_dc 0.001 (0.001)	
+Epoch: [7][172/172]	Time 0.695 (0.848)	Loss_ce 0.160 (0.221)	Loss_tp 0.655 (0.661)	Loss_ca 0.058 (0.059)	Loss_cr 0.001 (0.001)	Loss_ad 0.477 (0.488)	Loss_dc 0.001 (0.001)	
+Epoch: [8][172/172]	Time 0.633 (0.822)	Loss_ce 0.063 (0.187)	Loss_tp 0.641 (0.660)	Loss_ca 0.058 (0.058)	Loss_cr 0.001 (0.001)	Loss_ad 0.468 (0.482)	Loss_dc 0.001 (0.001)	
+Epoch: [9][172/172]	Time 0.860 (11.079)	Loss_ce 0.263 (0.181)	Loss_tp 0.660 (0.660)	Loss_ca 0.058 (0.058)	Loss_cr 0.001 (0.001)	Loss_ad 0.478 (0.481)	Loss_dc 0.001 (0.001)	
+Epoch: [10][172/172]	Time 0.812 (0.925)	Loss_ce 0.212 (0.172)	Loss_tp 0.644 (0.660)	Loss_ca 0.057 (0.058)	Loss_cr 0.001 (0.001)	Loss_ad 0.472 (0.479)	Loss_dc 0.001 (0.001)	
+Epoch: [11][172/172]	Time 0.858 (0.912)	Loss_ce 0.091 (0.148)	Loss_tp 0.656 (0.660)	Loss_ca 0.057 (0.057)	Loss_cr 0.001 (0.001)	Loss_ad 0.457 (0.475)	Loss_dc 0.001 (0.001)	
+Epoch: [12][172/172]	Time 0.621 (0.739)	Loss_ce 0.082 (0.120)	Loss_tp 0.666 (0.658)	Loss_ca 0.057 (0.057)	Loss_cr 0.001 (0.001)	Loss_ad 0.472 (0.471)	Loss_dc 0.001 (0.001)	
+Epoch: [13][172/172]	Time 0.621 (0.694)	Loss_ce 0.104 (0.108)	Loss_tp 0.646 (0.657)	Loss_ca 0.056 (0.056)	Loss_cr 0.001 (0.001)	Loss_ad 0.453 (0.469)	Loss_dc 0.001 (0.001)	
+Epoch: [14][172/172]	Time 0.627 (0.767)	Loss_ce 0.096 (0.100)	Loss_tp 0.658 (0.655)	Loss_ca 0.056 (0.056)	Loss_cr 0.001 (0.001)	Loss_ad 0.460 (0.465)	Loss_dc 0.001 (0.001)	
+Epoch: [15][172/172]	Time 0.621 (0.773)	Loss_ce 0.025 (0.083)	Loss_tp 0.650 (0.654)	Loss_ca 0.055 (0.055)	Loss_cr 0.001 (0.001)	Loss_ad 0.453 (0.463)	Loss_dc 0.001 (0.001)	
+Epoch: [16][172/172]	Time 0.623 (0.765)	Loss_ce 0.032 (0.073)	Loss_tp 0.640 (0.652)	Loss_ca 0.055 (0.055)	Loss_cr 0.001 (0.001)	Loss_ad 0.447 (0.459)	Loss_dc 0.001 (0.001)	
+Epoch: [17][172/172]	Time 0.631 (0.722)	Loss_ce 0.040 (0.078)	Loss_tp 0.637 (0.651)	Loss_ca 0.055 (0.055)	Loss_cr 0.001 (0.001)	Loss_ad 0.450 (0.458)	Loss_dc 0.001 (0.001)	
+Epoch: [18][172/172]	Time 0.893 (0.718)	Loss_ce 0.060 (0.072)	Loss_tp 0.657 (0.650)	Loss_ca 0.054 (0.054)	Loss_cr 0.001 (0.001)	Loss_ad 0.440 (0.453)	Loss_dc 0.001 (0.001)	
+Epoch: [19][172/172]	Time 0.694 (0.720)	Loss_ce 0.034 (0.074)	Loss_tp 0.648 (0.651)	Loss_ca 0.053 (0.054)	Loss_cr 0.001 (0.001)	Loss_ad 0.467 (0.453)	Loss_dc 0.001 (0.001)	
+Epoch: [20][172/172]	Time 0.880 (0.726)	Loss_ce 0.050 (0.060)	Loss_tp 0.649 (0.648)	Loss_ca 0.053 (0.053)	Loss_cr 0.001 (0.001)	Loss_ad 0.438 (0.451)	Loss_dc 0.001 (0.001)	
+Epoch: [21][172/172]	Time 0.697 (0.707)	Loss_ce 0.048 (0.061)	Loss_tp 0.640 (0.649)	Loss_ca 0.053 (0.053)	Loss_cr 0.001 (0.001)	Loss_ad 0.456 (0.449)	Loss_dc 0.001 (0.001)	
+Epoch: [22][172/172]	Time 0.704 (0.702)	Loss_ce 0.043 (0.064)	Loss_tp 0.647 (0.649)	Loss_ca 0.053 (0.053)	Loss_cr 0.001 (0.001)	Loss_ad 0.454 (0.448)	Loss_dc 0.001 (0.001)	
+Epoch: [23][172/172]	Time 0.622 (0.720)	Loss_ce 0.072 (0.057)	Loss_tp 0.652 (0.647)	Loss_ca 0.052 (0.052)	Loss_cr 0.001 (0.001)	Loss_ad 0.436 (0.446)	Loss_dc 0.001 (0.001)	
+Epoch: [24][172/172]	Time 0.674 (0.712)	Loss_ce 0.121 (0.053)	Loss_tp 0.649 (0.646)	Loss_ca 0.052 (0.052)	Loss_cr 0.001 (0.001)	Loss_ad 0.439 (0.444)	Loss_dc 0.001 (0.001)	
+Epoch: [25][172/172]	Time 0.969 (0.719)	Loss_ce 0.023 (0.050)	Loss_tp 0.646 (0.645)	Loss_ca 0.051 (0.051)	Loss_cr 0.001 (0.001)	Loss_ad 0.458 (0.441)	Loss_dc 0.001 (0.001)	
+Epoch: [26][172/172]	Time 0.738 (0.731)	Loss_ce 0.051 (0.049)	Loss_tp 0.653 (0.646)	Loss_ca 0.050 (0.051)	Loss_cr 0.001 (0.001)	Loss_ad 0.436 (0.439)	Loss_dc 0.001 (0.001)	
+Epoch: [27][172/172]	Time 0.642 (0.689)	Loss_ce 0.086 (0.049)	Loss_tp 0.644 (0.646)	Loss_ca 0.050 (0.050)	Loss_cr 0.001 (0.001)	Loss_ad 0.417 (0.439)	Loss_dc 0.001 (0.001)	
+Epoch: [28][172/172]	Time 0.624 (0.717)	Loss_ce 0.122 (0.052)	Loss_tp 0.652 (0.645)	Loss_ca 0.050 (0.050)	Loss_cr 0.001 (0.001)	Loss_ad 0.421 (0.436)	Loss_dc 0.001 (0.001)	
+Epoch: [29][172/172]	Time 0.809 (0.703)	Loss_ce 0.027 (0.051)	Loss_tp 0.634 (0.644)	Loss_ca 0.049 (0.050)	Loss_cr 0.001 (0.001)	Loss_ad 0.426 (0.437)	Loss_dc 0.001 (0.001)	
+Epoch: [30][172/172]	Time 0.684 (0.747)	Loss_ce 0.039 (0.044)	Loss_tp 0.632 (0.640)	Loss_ca 0.049 (0.050)	Loss_cr 0.001 (0.001)	Loss_ad 0.431 (0.432)	Loss_dc 0.001 (0.001)	
+Epoch: [31][172/172]	Time 0.644 (0.728)	Loss_ce 0.014 (0.035)	Loss_tp 0.636 (0.639)	Loss_ca 0.050 (0.050)	Loss_cr 0.001 (0.001)	Loss_ad 0.438 (0.430)	Loss_dc 0.001 (0.001)	
+Epoch: [32][172/172]	Time 0.633 (0.698)	Loss_ce 0.053 (0.037)	Loss_tp 0.627 (0.640)	Loss_ca 0.050 (0.049)	Loss_cr 0.001 (0.001)	Loss_ad 0.411 (0.428)	Loss_dc 0.001 (0.001)	
+Epoch: [33][172/172]	Time 0.659 (0.728)	Loss_ce 0.020 (0.038)	Loss_tp 0.650 (0.640)	Loss_ca 0.050 (0.049)	Loss_cr 0.001 (0.001)	Loss_ad 0.419 (0.428)	Loss_dc 0.001 (0.001)	
+Epoch: [34][172/172]	Time 0.623 (0.709)	Loss_ce 0.021 (0.035)	Loss_tp 0.643 (0.638)	Loss_ca 0.049 (0.049)	Loss_cr 0.001 (0.001)	Loss_ad 0.419 (0.429)	Loss_dc 0.001 (0.001)	
+Epoch: [35][172/172]	Time 0.644 (0.717)	Loss_ce 0.021 (0.033)	Loss_tp 0.641 (0.640)	Loss_ca 0.049 (0.049)	Loss_cr 0.001 (0.001)	Loss_ad 0.413 (0.427)	Loss_dc 0.001 (0.001)	
+Epoch: [36][172/172]	Time 0.679 (0.740)	Loss_ce 0.016 (0.032)	Loss_tp 0.638 (0.638)	Loss_ca 0.049 (0.049)	Loss_cr 0.001 (0.001)	Loss_ad 0.438 (0.429)	Loss_dc 0.001 (0.001)	
+Epoch: [37][172/172]	Time 0.779 (0.700)	Loss_ce 0.019 (0.033)	Loss_tp 0.635 (0.639)	Loss_ca 0.049 (0.049)	Loss_cr 0.001 (0.001)	Loss_ad 0.425 (0.426)	Loss_dc 0.001 (0.001)	
+Epoch: [38][172/172]	Time 0.789 (0.724)	Loss_ce 0.069 (0.034)	Loss_tp 0.621 (0.638)	Loss_ca 0.050 (0.049)	Loss_cr 0.001 (0.001)	Loss_ad 0.446 (0.427)	Loss_dc 0.001 (0.001)	
+Epoch: [39][172/172]	Time 0.623 (0.743)	Loss_ce 0.023 (0.034)	Loss_tp 0.640 (0.638)	Loss_ca 0.049 (0.049)	Loss_cr 0.001 (0.001)	Loss_ad 0.424 (0.426)	Loss_dc 0.001 (0.001)	
+Epoch: [40][172/172]	Time 0.731 (0.732)	Loss_ce 0.009 (0.033)	Loss_tp 0.636 (0.637)	Loss_ca 0.049 (0.049)	Loss_cr 0.001 (0.001)	Loss_ad 0.443 (0.426)	Loss_dc 0.001 (0.001)	
+Epoch: [41][172/172]	Time 0.659 (0.732)	Loss_ce 0.114 (0.031)	Loss_tp 0.658 (0.638)	Loss_ca 0.050 (0.049)	Loss_cr 0.001 (0.001)	Loss_ad 0.446 (0.425)	Loss_dc 0.001 (0.001)	
+Epoch: [42][172/172]	Time 0.622 (0.771)	Loss_ce 0.028 (0.032)	Loss_tp 0.646 (0.637)	Loss_ca 0.049 (0.049)	Loss_cr 0.001 (0.001)	Loss_ad 0.428 (0.426)	Loss_dc 0.001 (0.001)	
+Epoch: [43][172/172]	Time 0.710 (0.721)	Loss_ce 0.035 (0.031)	Loss_tp 0.625 (0.637)	Loss_ca 0.048 (0.049)	Loss_cr 0.001 (0.001)	Loss_ad 0.420 (0.426)	Loss_dc 0.001 (0.001)	
+Epoch: [44][172/172]	Time 0.622 (0.725)	Loss_ce 0.065 (0.029)	Loss_tp 0.641 (0.637)	Loss_ca 0.049 (0.049)	Loss_cr 0.001 (0.001)	Loss_ad 0.439 (0.424)	Loss_dc 0.001 (0.001)	
+Epoch: [45][172/172]	Time 0.629 (0.734)	Loss_ce 0.048 (0.034)	Loss_tp 0.643 (0.637)	Loss_ca 0.049 (0.049)	Loss_cr 0.001 (0.001)	Loss_ad 0.422 (0.425)	Loss_dc 0.001 (0.001)	
+Epoch: [46][172/172]	Time 0.623 (0.725)	Loss_ce 0.011 (0.030)	Loss_tp 0.640 (0.636)	Loss_ca 0.048 (0.049)	Loss_cr 0.001 (0.001)	Loss_ad 0.462 (0.424)	Loss_dc 0.001 (0.001)	
+Epoch: [47][172/172]	Time 0.688 (0.708)	Loss_ce 0.033 (0.032)	Loss_tp 0.656 (0.636)	Loss_ca 0.048 (0.049)	Loss_cr 0.001 (0.001)	Loss_ad 0.418 (0.425)	Loss_dc 0.001 (0.001)	
+Epoch: [48][172/172]	Time 0.690 (0.713)	Loss_ce 0.021 (0.031)	Loss_tp 0.628 (0.636)	Loss_ca 0.048 (0.049)	Loss_cr 0.001 (0.001)	Loss_ad 0.427 (0.423)	Loss_dc 0.001 (0.001)	
+Epoch: [49][172/172]	Time 0.657 (0.712)	Loss_ce 0.012 (0.032)	Loss_tp 0.640 (0.636)	Loss_ca 0.049 (0.049)	Loss_cr 0.001 (0.001)	Loss_ad 0.431 (0.424)	Loss_dc 0.001 (0.001)	
+Epoch: [50][172/172]	Time 0.630 (0.745)	Loss_ce 0.032 (0.031)	Loss_tp 0.627 (0.637)	Loss_ca 0.049 (0.049)	Loss_cr 0.001 (0.001)	Loss_ad 0.416 (0.423)	Loss_dc 0.001 (0.001)	
+Epoch: [51][172/172]	Time 0.621 (0.768)	Loss_ce 0.010 (0.028)	Loss_tp 0.626 (0.635)	Loss_ca 0.048 (0.048)	Loss_cr 0.001 (0.001)	Loss_ad 0.428 (0.423)	Loss_dc 0.001 (0.001)	
+Epoch: [52][172/172]	Time 0.719 (0.723)	Loss_ce 0.017 (0.031)	Loss_tp 0.631 (0.635)	Loss_ca 0.048 (0.048)	Loss_cr 0.001 (0.001)	Loss_ad 0.433 (0.423)	Loss_dc 0.001 (0.001)	
+Epoch: [53][172/172]	Time 0.621 (0.731)	Loss_ce 0.032 (0.029)	Loss_tp 0.644 (0.635)	Loss_ca 0.048 (0.048)	Loss_cr 0.001 (0.001)	Loss_ad 0.411 (0.424)	Loss_dc 0.001 (0.001)	
+Epoch: [54][172/172]	Time 0.642 (0.717)	Loss_ce 0.022 (0.030)	Loss_tp 0.638 (0.635)	Loss_ca 0.049 (0.048)	Loss_cr 0.001 (0.001)	Loss_ad 0.431 (0.423)	Loss_dc 0.001 (0.001)	
+Epoch: [55][172/172]	Time 0.704 (0.730)	Loss_ce 0.021 (0.030)	Loss_tp 0.644 (0.635)	Loss_ca 0.048 (0.048)	Loss_cr 0.001 (0.001)	Loss_ad 0.419 (0.424)	Loss_dc 0.001 (0.001)	
+Epoch: [56][172/172]	Time 0.651 (0.723)	Loss_ce 0.007 (0.029)	Loss_tp 0.616 (0.635)	Loss_ca 0.048 (0.048)	Loss_cr 0.001 (0.001)	Loss_ad 0.430 (0.423)	Loss_dc 0.001 (0.001)	
+Epoch: [57][172/172]	Time 0.678 (0.724)	Loss_ce 0.016 (0.031)	Loss_tp 0.626 (0.635)	Loss_ca 0.048 (0.048)	Loss_cr 0.001 (0.001)	Loss_ad 0.422 (0.423)	Loss_dc 0.001 (0.001)	
+Epoch: [58][172/172]	Time 0.621 (0.710)	Loss_ce 0.028 (0.030)	Loss_tp 0.650 (0.635)	Loss_ca 0.049 (0.048)	Loss_cr 0.001 (0.001)	Loss_ad 0.417 (0.423)	Loss_dc 0.001 (0.001)	
+Epoch: [59][172/172]	Time 0.626 (0.735)	Loss_ce 0.015 (0.029)	Loss_tp 0.625 (0.635)	Loss_ca 0.049 (0.048)	Loss_cr 0.001 (0.001)	Loss_ad 0.422 (0.423)	Loss_dc 0.001 (0.001)	
+module.classifier.weight ...
+Save Features:  19889
+Old Gallery Feature Updated to:  logs-hpa-full-setting1/market1501_features.pth.tar
+Old Gallery Feature Updated to:  logs-hpa-full-setting1/cuhk_sysu_features.pth.tar
+=================================================================================
+Results on market1501
+Mean AP: 64.0%
+CMC Scores:
+  top-1          83.0%
+  top-5          92.4%
+  top-10         95.2%
+Results on cuhk_sysu
+Mean AP: 81.7%
+CMC Scores:
+  top-1          84.0%
+  top-5          91.1%
+  top-10         93.5%
+Results on dukemtmc
+Mean AP: 58.1%
+CMC Scores:
+  top-1          74.0%
+  top-5          85.1%
+  top-10         89.0%
+Results on market1501
+Mean AP: 1.6%
+CMC Scores:
+  top-1           2.1%
+  top-5           6.5%
+  top-10         11.0%
+Results on cuhk_sysu
+Mean AP: 75.9%
+CMC Scores:
+  top-1          77.8%
+  top-5          87.8%
+  top-10         90.8%
+Results on dukemtmc
+Mean AP: 58.1%
+CMC Scores:
+  top-1          74.0%
+  top-5          85.1%
+  top-10         89.0%
+Average mAP on Seen dataset: 67.9%
+Average R1 on Seen dataset: 80.3%
+market1501		cuhk_sysu		dukemtmc		|Average	|
+|64.0/83.0	|81.7/84.0	|58.1/74.0	|67.9/80.3	|
+Average mAP on unSeen dataset: 45.2%
+Average R1 on unSeen dataset: 51.3%
+market1501	cuhk_sysu	dukemtmc	|Average	|
+|1.6/2.1	|75.9/77.8	|58.1/74.0	|45.2/51.3	|
+using soft triplet loss for training
+####### starting training on msmt17 #######
+Epoch: [0][206/206]	Time 0.708 (0.726)	Loss_ce 3.896 (5.228)	Loss_tp 0.709 (0.724)	Loss_ca 0.049 (0.049)	Loss_cr 0.001 (0.001)	Loss_ad 0.528 (0.511)	Loss_dc 0.001 (0.001)	
+Epoch: [1][206/206]	Time 0.751 (0.721)	Loss_ce 2.627 (2.961)	Loss_tp 0.704 (0.707)	Loss_ca 0.049 (0.049)	Loss_cr 0.001 (0.001)	Loss_ad 0.522 (0.532)	Loss_dc 0.001 (0.001)	
+Epoch: [2][206/206]	Time 0.814 (0.738)	Loss_ce 0.951 (1.434)	Loss_tp 0.690 (0.691)	Loss_ca 0.050 (0.049)	Loss_cr 0.001 (0.001)	Loss_ad 0.531 (0.532)	Loss_dc 0.001 (0.001)	
+Epoch: [3][206/206]	Time 0.987 (0.729)	Loss_ce 0.553 (0.774)	Loss_tp 0.677 (0.681)	Loss_ca 0.049 (0.049)	Loss_cr 0.001 (0.001)	Loss_ad 0.534 (0.522)	Loss_dc 0.001 (0.001)	
+Epoch: [4][206/206]	Time 0.740 (0.717)	Loss_ce 0.457 (0.455)	Loss_tp 0.683 (0.675)	Loss_ca 0.049 (0.049)	Loss_cr 0.001 (0.001)	Loss_ad 0.503 (0.515)	Loss_dc 0.001 (0.001)	
+Epoch: [5][206/206]	Time 0.621 (0.741)	Loss_ce 0.404 (0.326)	Loss_tp 0.676 (0.674)	Loss_ca 0.050 (0.049)	Loss_cr 0.001 (0.001)	Loss_ad 0.480 (0.508)	Loss_dc 0.001 (0.001)	
+Epoch: [6][206/206]	Time 0.628 (0.741)	Loss_ce 0.320 (0.260)	Loss_tp 0.681 (0.673)	Loss_ca 0.048 (0.049)	Loss_cr 0.001 (0.001)	Loss_ad 0.513 (0.503)	Loss_dc 0.001 (0.001)	
+Epoch: [7][206/206]	Time 0.629 (0.734)	Loss_ce 0.279 (0.212)	Loss_tp 0.672 (0.672)	Loss_ca 0.050 (0.049)	Loss_cr 0.001 (0.001)	Loss_ad 0.495 (0.498)	Loss_dc 0.001 (0.001)	
+Epoch: [8][206/206]	Time 0.647 (0.709)	Loss_ce 0.161 (0.187)	Loss_tp 0.668 (0.671)	Loss_ca 0.048 (0.048)	Loss_cr 0.001 (0.001)	Loss_ad 0.489 (0.494)	Loss_dc 0.001 (0.001)	
+Epoch: [9][206/206]	Time 0.686 (0.724)	Loss_ce 0.170 (0.163)	Loss_tp 0.658 (0.671)	Loss_ca 0.048 (0.048)	Loss_cr 0.001 (0.001)	Loss_ad 0.487 (0.493)	Loss_dc 0.001 (0.001)	
+Epoch: [10][206/206]	Time 0.682 (0.716)	Loss_ce 0.240 (0.150)	Loss_tp 0.680 (0.670)	Loss_ca 0.048 (0.048)	Loss_cr 0.001 (0.001)	Loss_ad 0.477 (0.491)	Loss_dc 0.001 (0.001)	
+Epoch: [11][206/206]	Time 0.637 (0.749)	Loss_ce 0.066 (0.126)	Loss_tp 0.670 (0.668)	Loss_ca 0.047 (0.047)	Loss_cr 0.001 (0.001)	Loss_ad 0.491 (0.486)	Loss_dc 0.001 (0.001)	
+Epoch: [12][206/206]	Time 0.642 (0.763)	Loss_ce 0.243 (0.117)	Loss_tp 0.681 (0.669)	Loss_ca 0.047 (0.047)	Loss_cr 0.001 (0.001)	Loss_ad 0.489 (0.483)	Loss_dc 0.001 (0.001)	
+Epoch: [13][206/206]	Time 0.651 (0.736)	Loss_ce 0.082 (0.109)	Loss_tp 0.664 (0.667)	Loss_ca 0.045 (0.046)	Loss_cr 0.001 (0.001)	Loss_ad 0.494 (0.479)	Loss_dc 0.001 (0.001)	
+Epoch: [14][206/206]	Time 0.636 (0.700)	Loss_ce 0.041 (0.093)	Loss_tp 0.656 (0.666)	Loss_ca 0.046 (0.046)	Loss_cr 0.001 (0.001)	Loss_ad 0.465 (0.478)	Loss_dc 0.001 (0.001)	
+Epoch: [15][206/206]	Time 0.626 (0.736)	Loss_ce 0.069 (0.089)	Loss_tp 0.656 (0.665)	Loss_ca 0.046 (0.046)	Loss_cr 0.001 (0.001)	Loss_ad 0.472 (0.474)	Loss_dc 0.001 (0.001)	
+Epoch: [16][206/206]	Time 0.665 (0.712)	Loss_ce 0.071 (0.077)	Loss_tp 0.641 (0.663)	Loss_ca 0.044 (0.045)	Loss_cr 0.001 (0.001)	Loss_ad 0.461 (0.470)	Loss_dc 0.001 (0.001)	
+Epoch: [17][206/206]	Time 0.895 (0.728)	Loss_ce 0.058 (0.077)	Loss_tp 0.657 (0.662)	Loss_ca 0.045 (0.045)	Loss_cr 0.001 (0.001)	Loss_ad 0.460 (0.469)	Loss_dc 0.001 (0.001)	
+Epoch: [18][206/206]	Time 0.833 (0.789)	Loss_ce 0.102 (0.073)	Loss_tp 0.670 (0.662)	Loss_ca 0.044 (0.044)	Loss_cr 0.001 (0.001)	Loss_ad 0.468 (0.465)	Loss_dc 0.001 (0.001)	
+Epoch: [19][206/206]	Time 0.683 (0.760)	Loss_ce 0.048 (0.068)	Loss_tp 0.657 (0.660)	Loss_ca 0.043 (0.044)	Loss_cr 0.001 (0.001)	Loss_ad 0.465 (0.462)	Loss_dc 0.001 (0.001)	
+Epoch: [20][206/206]	Time 0.921 (0.727)	Loss_ce 0.065 (0.062)	Loss_tp 0.662 (0.659)	Loss_ca 0.044 (0.043)	Loss_cr 0.001 (0.001)	Loss_ad 0.463 (0.459)	Loss_dc 0.001 (0.001)	
+Epoch: [21][206/206]	Time 0.623 (0.752)	Loss_ce 0.018 (0.057)	Loss_tp 0.642 (0.657)	Loss_ca 0.042 (0.043)	Loss_cr 0.001 (0.001)	Loss_ad 0.469 (0.457)	Loss_dc 0.001 (0.001)	
+Epoch: [22][206/206]	Time 0.630 (0.750)	Loss_ce 0.039 (0.056)	Loss_tp 0.655 (0.657)	Loss_ca 0.043 (0.043)	Loss_cr 0.001 (0.001)	Loss_ad 0.460 (0.457)	Loss_dc 0.001 (0.001)	
+Epoch: [23][206/206]	Time 0.622 (0.722)	Loss_ce 0.021 (0.053)	Loss_tp 0.647 (0.657)	Loss_ca 0.042 (0.042)	Loss_cr 0.001 (0.001)	Loss_ad 0.459 (0.453)	Loss_dc 0.001 (0.001)	
+Epoch: [24][206/206]	Time 0.624 (0.742)	Loss_ce 0.054 (0.049)	Loss_tp 0.659 (0.655)	Loss_ca 0.042 (0.042)	Loss_cr 0.001 (0.001)	Loss_ad 0.444 (0.452)	Loss_dc 0.001 (0.001)	
+Epoch: [25][206/206]	Time 0.622 (0.723)	Loss_ce 0.039 (0.052)	Loss_tp 0.639 (0.655)	Loss_ca 0.041 (0.041)	Loss_cr 0.001 (0.001)	Loss_ad 0.455 (0.450)	Loss_dc 0.001 (0.001)	
+Epoch: [26][206/206]	Time 0.623 (0.699)	Loss_ce 0.066 (0.044)	Loss_tp 0.659 (0.653)	Loss_ca 0.041 (0.041)	Loss_cr 0.001 (0.001)	Loss_ad 0.448 (0.448)	Loss_dc 0.001 (0.001)	
+Epoch: [27][206/206]	Time 0.624 (0.716)	Loss_ce 0.143 (0.044)	Loss_tp 0.643 (0.653)	Loss_ca 0.041 (0.041)	Loss_cr 0.001 (0.001)	Loss_ad 0.448 (0.446)	Loss_dc 0.001 (0.001)	

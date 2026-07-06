@@ -61,7 +61,6 @@ def main_worker(args, cfg):
         log_dir = osp.dirname(args.test_folder)
         sys.stdout = Logger(osp.join(log_dir, log_name))
     print("==========\nArgs:{}\n==========".format(args))
-    print("Feature enhancer: {}".format(cfg.MODEL.FEATURE_ENHANCER.NAME))
     log_res_name='log_res.txt'
     logger_res=Logger_res(osp.join(args.logs_dir, log_res_name))
     
@@ -365,7 +364,7 @@ def linear_combination(args, model, model_old, alpha, model_old_id=-1):
     ''''create new model'''
     model_new = copy.deepcopy(model)
     model_new_state_dict = model_new.state_dict()
-    '''fuse the parameters'''
+    '''combine the parameters'''
     for k, v in model_state_dict.items():
         if model_old_state_dict[k].shape == v.shape:
                 model_new_state_dict[k] = alpha * v + (1 - alpha) * model_old_state_dict[k]
@@ -384,7 +383,7 @@ def set_zero(model):
     ''''create new model'''
     model_new = copy.deepcopy(model)
     model_new_state_dict = model_new.state_dict()
-    '''fuse the parameters'''
+    '''zero the parameters'''
     for k, v in model_state_dict.items():
         model_new_state_dict[k] = 0. * v
     
@@ -432,7 +431,7 @@ if __name__ == '__main__':
     parser.add_argument('--logs-dir', type=str, metavar='PATH',
                         default=osp.join('../logs/try'))
 
-    parser.add_argument('--config_file', type=str, default='config/fuse.yml',
+    parser.add_argument('--config_file', type=str, default='config/base.yml',
                         help="config_file")
   
     parser.add_argument('--test_folder', type=str, default=None, help="test the models in a file")

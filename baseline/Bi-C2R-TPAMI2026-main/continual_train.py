@@ -61,6 +61,7 @@ def main_worker(args, cfg):
         log_dir = osp.dirname(args.test_folder)
         sys.stdout = Logger(osp.join(log_dir, log_name))
     print("==========\nArgs:{}\n==========".format(args))
+    print("Feature enhancer: {}".format(cfg.MODEL.FEATURE_ENHANCER.NAME))
     log_res_name='log_res.txt'
     logger_res=Logger_res(osp.join(args.logs_dir, log_res_name))
     

@@ -5,6 +5,7 @@ import copy
 import math
 from reid.models.gem_pool import GeneralizedMeanPoolingP
 from torch.nn import functional as F
+from .feature_enhancers import build_feature_enhancer
 
 class Backbone(nn.Module):
     def __init__(self,last_stride, bn_norm, with_ibn, with_se,block, num_classes,layers, cfg=None):
@@ -14,6 +15,7 @@ class Backbone(nn.Module):
                             block=block,
                             layers=layers)
         print('using resnet50 as a backbone')
+        self.feature_enhancer = build_feature_enhancer(cfg, channels=self.in_planes)
 
         
         self.bottleneck = nn.BatchNorm2d(2048)
@@ -31,6 +33,7 @@ class Backbone(nn.Module):
         self.num_classes = num_classes
     def forward(self, x, domains=None, training_phase=None, get_all_feat=False, epoch=0):        
         x = self.base(x)
+        x = self.feature_enhancer(x)
         global_feat = self.pooling_layer(x)
 
         bn_feat = self.bottleneck(global_feat)

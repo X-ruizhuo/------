@@ -29,6 +29,37 @@ def worker_init_fn(worked_id):
     np.random.seed(worker_seed)
     random.seed(worker_seed)
 
+
+def _unwrap_parallel_model(model):
+    while hasattr(model, "module"):
+        model = model.module
+    return model
+
+
+def log_feature_enhancer_state(model, context="", logger_res=None):
+    model = _unwrap_parallel_model(model)
+    enhancer = getattr(model, "feature_enhancer", None)
+    if enhancer is None or not hasattr(enhancer, "get_scale_state"):
+        return
+    state = enhancer.get_scale_state()
+    if not state:
+        return
+
+    max_value = "None" if state["max"] is None else "{:.6f}".format(state["max"])
+    message = (
+        "feature_enhancer.res_scale raw={:.6f} effective={:.6f} max={} "
+        "learnable={} context={}"
+    ).format(
+        state["raw"],
+        state["effective"],
+        max_value,
+        state["learnable"],
+        context,
+    )
+    print(message)
+    if logger_res:
+        logger_res.append(message)
+
 def main():
     args = parser.parse_args()
 
@@ -93,6 +124,7 @@ def main_worker(args, cfg):
     model = DataParallel(model)    
     model_trans = DataParallel(model_trans)
     model_trans2 = DataParallel(model_trans2)
+    log_feature_enhancer_state(model, context="init", logger_res=logger_res)
 
     writer = SummaryWriter(log_dir=args.logs_dir)
     '''test the models under a folder'''
@@ -139,6 +171,11 @@ def main_worker(args, cfg):
         if set_index>0:
             best_alpha = get_adaptive_alpha(args, model, model_old, all_train_sets, set_index)
             model = linear_combination(args, model, model_old, best_alpha)
+            log_feature_enhancer_state(
+                model,
+                context="after_adaptive_ema_{}".format(training_set[set_index]),
+                logger_res=logger_res,
+            )
 
         dataset, num_classes, train_loader, test_loader, init_loader, name = all_train_sets[set_index]
         from reid.evaluators import extract_features
@@ -261,6 +298,11 @@ def train_dataset(cfg, args, all_train_sets, all_test_only_sets, set_index, mode
     trainer = Trainer(cfg, args, model, model_trans, model_trans2, add_num + num_classes,  writer=writer)
 
     print('####### starting training on {} #######'.format(name))
+    log_feature_enhancer_state(
+        model,
+        context="stage{}_{}_start".format(set_index + 1, name),
+        logger_res=logger_res,
+    )
     for epoch in range(0, Epochs):
 
         train_loader.new_epoch()
@@ -269,6 +311,11 @@ def train_dataset(cfg, args, all_train_sets, all_test_only_sets, set_index, mode
                       )
         lr_scheduler.step()       
        
+        log_feature_enhancer_state(
+            model,
+            context="stage{}_{}_epoch{}".format(set_index + 1, name, epoch + 1),
+            logger_res=logger_res,
+        )
 
         if ((epoch + 1) % args.eval_epoch == 0 or epoch+1==Epochs):
             save_checkpoint({

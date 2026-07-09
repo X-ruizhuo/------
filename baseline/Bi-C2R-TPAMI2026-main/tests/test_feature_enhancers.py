@@ -93,6 +93,39 @@ def test_stable_residual_clamps_large_scale_for_safe_adaptation():
     assert torch.allclose(y, x * 1.1)
 
 
+def test_stable_residual_reports_raw_and_effective_scale():
+    class DoubleEnhancer(nn.Module):
+        def forward(self, x):
+            return x * 2.0
+
+    module = StableResidualAdapter(
+        DoubleEnhancer(),
+        res_scale_init=1.0,
+        learnable=False,
+        res_scale_max=0.1,
+    )
+
+    state = module.get_scale_state()
+
+    assert state["raw"] == pytest.approx(1.0)
+    assert state["effective"] == pytest.approx(0.1)
+    assert state["max"] == pytest.approx(0.1)
+    assert state["learnable"] is False
+
+
+def test_build_feature_enhancer_noop_eca_ablation_matches_input():
+    x = torch.randn(2, 8, 8, 4)
+    module = build_feature_enhancer(
+        _make_cfg(name="eca_safe", res_scale_init=0.0, learnable=False),
+        channels=8,
+    )
+
+    y = module(x)
+
+    assert torch.allclose(y, x)
+    assert module.get_scale_state()["effective"] == pytest.approx(0.0)
+
+
 def test_build_feature_enhancer_supports_none_and_eca_safe():
     none_module = build_feature_enhancer(_make_cfg(name="none"), channels=8)
     assert isinstance(none_module, IdentityEnhancer)
@@ -100,4 +133,3 @@ def test_build_feature_enhancer_supports_none_and_eca_safe():
     eca_module = build_feature_enhancer(_make_cfg(name="eca_safe"), channels=8)
     assert isinstance(eca_module, StableResidualAdapter)
     assert isinstance(eca_module.enhancer, ECAChannelAttention)
-

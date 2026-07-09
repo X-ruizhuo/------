@@ -8,6 +8,9 @@ class IdentityEnhancer(nn.Module):
     def forward(self, x):
         return x
 
+    def get_scale_state(self):
+        return None
+
 
 class ECAChannelAttention(nn.Module):
     """Efficient channel attention using only global average statistics."""
@@ -61,11 +64,27 @@ class StableResidualAdapter(nn.Module):
         else:
             self.register_buffer("res_scale", scale)
 
+    def _bounded_scale_value(self):
+        raw = float(self.res_scale.detach().cpu().item())
+        effective = raw
+        if self.res_scale_max is not None and self.res_scale_max >= 0:
+            effective = min(max(raw, 0.0), float(self.res_scale_max))
+        return raw, effective
+
     def _bounded_scale(self, x):
         scale = self.res_scale.to(device=x.device, dtype=x.dtype)
         if self.res_scale_max is not None and self.res_scale_max >= 0:
             scale = torch.clamp(scale, min=0.0, max=float(self.res_scale_max))
         return scale
+
+    def get_scale_state(self):
+        raw, effective = self._bounded_scale_value()
+        return {
+            "raw": raw,
+            "effective": effective,
+            "max": self.res_scale_max,
+            "learnable": isinstance(self.res_scale, nn.Parameter),
+        }
 
     def forward(self, x):
         enhanced = self.enhancer(x)
@@ -133,4 +152,3 @@ __all__ = [
     "StableResidualAdapter",
     "build_feature_enhancer",
 ]
-

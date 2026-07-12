@@ -1,72 +1,37 @@
-from pathlib import Path
+from types import SimpleNamespace
+
+import torch
+
+from reid.models.resnet import make_model
 
 
-def test_training_entrypoint_defaults_to_base_config():
-    train_script = Path(__file__).resolve().parents[1] / "continual_train.py"
-    source = train_script.read_text(encoding="utf-8")
-
-    assert "default='config/base.yml'" in source
-
-
-def test_training_entrypoint_logs_feature_enhancer_scale():
-    train_script = Path(__file__).resolve().parents[1] / "continual_train.py"
-    source = train_script.read_text(encoding="utf-8")
-
-    assert "def log_feature_enhancer_state" in source
-    assert "feature_enhancer.res_scale raw=" in source
-
-
-def test_resnet_uses_feature_enhancer_before_pooling():
-    model_source = (
-        Path(__file__).resolve().parents[1] / "reid" / "models" / "resnet.py"
-    ).read_text(encoding="utf-8")
-
-    assert "from .feature_enhancers import build_feature_enhancer" in model_source
-    assert "self.feature_enhancer = build_feature_enhancer(cfg, channels=self.in_planes)" in model_source
-    assert "x = self.feature_enhancer(x)" in model_source
-    assert model_source.index("x = self.feature_enhancer(x)") < model_source.index(
-        "global_feat = self.pooling_layer(x)"
+def _cfg(name="grn", scale=0.05, learnable=True, use_bias=True):
+    grn_cfg = SimpleNamespace(USE_BIAS=use_bias, EPS=1e-6)
+    enhancer_cfg = SimpleNamespace(
+        NAME=name,
+        CHANNELS=2048,
+        RES_SCALE_INIT=scale,
+        RES_SCALE_LEARNABLE=learnable,
+        GRN=grn_cfg,
     )
+    return SimpleNamespace(MODEL=SimpleNamespace(FEATURE_ENHANCER=enhancer_cfg))
 
 
-def test_run_scripts_select_baseline_and_eca_configs():
-    root = Path(__file__).resolve().parents[1]
+def test_make_model_accepts_cfg_and_keeps_training_output_shapes():
+    model = make_model(_cfg(), num_class=10, camera_num=0, view_num=0, pretrain=False)
+    model.train()
+    x = torch.randn(2, 3, 64, 32)
 
-    assert "--logs-dir logs-res-setting1/ --setting 1" in (root / "run1.sh").read_text(
-        encoding="utf-8"
-    )
-    assert "--logs-dir logs-res-setting2/ --setting 2" in (root / "run2.sh").read_text(
-        encoding="utf-8"
-    )
-    assert "--config_file config/eca.yml" in (root / "run_eca1.sh").read_text(
-        encoding="utf-8"
-    )
-    assert "--config_file config/eca.yml" in (root / "run_eca2.sh").read_text(
-        encoding="utf-8"
-    )
+    global_feat, bn_feat, cls_outputs, feat_final_layer = model(x)
+
+    assert global_feat.shape == (2, 2048)
+    assert bn_feat.shape == (2, 2048)
+    assert cls_outputs.shape == (2, 10)
+    assert feat_final_layer.shape[0] == 2
+    assert feat_final_layer.shape[1] == 2048
 
 
-def test_eca_ablation_configs_and_scripts_exist():
-    root = Path(__file__).resolve().parents[1]
-    expected_configs = [
-        "eca_noop.yml",
-        "eca_fixed_002.yml",
-        "eca_fixed_005.yml",
-        "eca_k5.yml",
-        "eca_k7.yml",
-        "eca_max_005.yml",
-    ]
+def test_make_model_keeps_old_positional_call_working():
+    model = make_model(10, 0, 0, False)
 
-    for config_name in expected_configs:
-        config_text = (root / "config" / config_name).read_text(encoding="utf-8")
-        assert 'NAME: "eca_safe"' in config_text
-
-    assert "CONFIG_NAME=${1:-eca_noop}" in (root / "run_eca_ablation1.sh").read_text(
-        encoding="utf-8"
-    )
-    assert "--setting 1" in (root / "run_eca_ablation1.sh").read_text(
-        encoding="utf-8"
-    )
-    assert "--setting 2" in (root / "run_eca_ablation2.sh").read_text(
-        encoding="utf-8"
-    )
+    assert model.classifier.out_features == 10

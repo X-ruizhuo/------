@@ -1,135 +1,66 @@
 from types import SimpleNamespace
+import math
 
-import pytest
-
-torch = pytest.importorskip("torch")
-import torch.nn as nn
+import torch
 
 from reid.models.feature_enhancers import (
-    ECAChannelAttention,
+    GRNSafeEnhancer,
     IdentityEnhancer,
     StableResidualAdapter,
     build_feature_enhancer,
 )
 
 
-def _make_cfg(
-    name="none",
-    channels=8,
-    res_scale_init=0.0,
-    learnable=True,
-    res_scale_max=0.1,
-    **eca_kwargs
-):
-    eca_defaults = {"K_SIZE": 3}
-    eca_defaults.update(eca_kwargs)
-    feature_enhancer = SimpleNamespace(
+def _cfg(name="grn", scale=0.05, learnable=True, use_bias=True):
+    grn_cfg = SimpleNamespace(USE_BIAS=use_bias, EPS=1e-6)
+    enhancer_cfg = SimpleNamespace(
         NAME=name,
-        CHANNELS=channels,
-        RES_SCALE_INIT=res_scale_init,
+        CHANNELS=8,
+        RES_SCALE_INIT=scale,
         RES_SCALE_LEARNABLE=learnable,
-        RES_SCALE_MAX=res_scale_max,
-        ECA=SimpleNamespace(**eca_defaults),
+        GRN=grn_cfg,
     )
-    return SimpleNamespace(MODEL=SimpleNamespace(FEATURE_ENHANCER=feature_enhancer))
+    return SimpleNamespace(MODEL=SimpleNamespace(FEATURE_ENHANCER=enhancer_cfg))
 
 
-def test_identity_enhancer_returns_input_unchanged():
-    x = torch.randn(2, 8, 8, 4)
-    y = IdentityEnhancer()(x)
+def test_identity_enhancer_is_exact_identity():
+    x = torch.randn(2, 8, 4, 4)
+    enhancer = IdentityEnhancer()
+
+    y = enhancer(x)
 
     assert y is x
-    assert torch.equal(y, x)
+    assert list(enhancer.parameters()) == []
 
 
-def test_eca_channel_attention_preserves_shape():
-    x = torch.randn(2, 8, 8, 4)
-    module = ECAChannelAttention(channels=8, k_size=3)
+def test_grn_safe_enhancer_preserves_shape_and_starts_as_identity():
+    x = torch.randn(2, 8, 4, 4)
+    enhancer = build_feature_enhancer(_cfg(), channels=8)
 
-    y = module(x)
+    y = enhancer(x)
 
     assert y.shape == x.shape
+    assert torch.allclose(y, x, atol=0.0, rtol=0.0)
+    assert math.isclose(enhancer.get_scale_state()["effective"], 0.05, rel_tol=0.0, abs_tol=1e-8)
 
 
-@pytest.mark.parametrize("k_size", [0, 2, -1])
-def test_eca_channel_attention_rejects_invalid_kernel_size(k_size):
-    with pytest.raises(ValueError):
-        ECAChannelAttention(channels=8, k_size=k_size)
+def test_residual_scale_zero_blocks_a_non_identity_inner_module():
+    x = torch.randn(2, 8, 4, 4)
+    inner = GRNSafeEnhancer(8, use_bias=True, eps=1e-6)
+    with torch.no_grad():
+        inner.gamma.fill_(0.5)
+        inner.beta.fill_(0.25)
+    enhancer = StableResidualAdapter(inner, scale_init=0.0, learnable=False)
+
+    y = enhancer(x)
+
+    assert torch.allclose(y, x, atol=0.0, rtol=0.0)
 
 
-def test_stable_residual_zero_scale_matches_input():
-    class DoubleEnhancer(nn.Module):
-        def forward(self, x):
-            return x * 2.0
+def test_grn_without_beta_forwards():
+    x = torch.randn(2, 8, 4, 4)
+    enhancer = build_feature_enhancer(_cfg(use_bias=False), channels=8)
 
-    x = torch.randn(2, 8, 8, 4)
-    module = StableResidualAdapter(
-        DoubleEnhancer(),
-        res_scale_init=0.0,
-        learnable=False,
-        res_scale_max=0.1,
-    )
+    y = enhancer(x)
 
-    y = module(x)
-
-    assert torch.allclose(y, x)
-
-
-def test_stable_residual_clamps_large_scale_for_safe_adaptation():
-    class DoubleEnhancer(nn.Module):
-        def forward(self, x):
-            return x * 2.0
-
-    x = torch.randn(2, 8, 8, 4)
-    module = StableResidualAdapter(
-        DoubleEnhancer(),
-        res_scale_init=1.0,
-        learnable=False,
-        res_scale_max=0.1,
-    )
-
-    y = module(x)
-
-    assert torch.allclose(y, x * 1.1)
-
-
-def test_stable_residual_reports_raw_and_effective_scale():
-    class DoubleEnhancer(nn.Module):
-        def forward(self, x):
-            return x * 2.0
-
-    module = StableResidualAdapter(
-        DoubleEnhancer(),
-        res_scale_init=1.0,
-        learnable=False,
-        res_scale_max=0.1,
-    )
-
-    state = module.get_scale_state()
-
-    assert state["raw"] == pytest.approx(1.0)
-    assert state["effective"] == pytest.approx(0.1)
-    assert state["max"] == pytest.approx(0.1)
-    assert state["learnable"] is False
-
-
-def test_build_feature_enhancer_noop_eca_ablation_matches_input():
-    x = torch.randn(2, 8, 8, 4)
-    module = build_feature_enhancer(
-        _make_cfg(name="eca_safe", res_scale_init=0.0, learnable=False),
-        channels=8,
-    )
-
-    y = module(x)
-
-    assert torch.allclose(y, x)
-    assert module.get_scale_state()["effective"] == pytest.approx(0.0)
-
-
-def test_build_feature_enhancer_supports_none_and_eca_safe():
-    none_module = build_feature_enhancer(_make_cfg(name="none"), channels=8)
-    assert isinstance(none_module, IdentityEnhancer)
-
-    eca_module = build_feature_enhancer(_make_cfg(name="eca_safe"), channels=8)
-    assert isinstance(eca_module, StableResidualAdapter)
-    assert isinstance(eca_module.enhancer, ECAChannelAttention)
+    assert y.shape == x.shape

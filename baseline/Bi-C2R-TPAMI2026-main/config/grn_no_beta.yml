@@ -1,0 +1,11 @@
+MODEL:
+  FEATURE_ENHANCER:
+    NAME: "grn"
+    CHANNELS: 2048
+    RES_SCALE_INIT: 0.05
+    RES_SCALE_LEARNABLE: True
+    RES_SCALE_MAX: 0.1
+    GRN:
+      USE_BIAS: False
+      EPS: 1e-6
+      DETACH_RESPONSE: False

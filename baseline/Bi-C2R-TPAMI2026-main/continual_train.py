@@ -29,33 +29,35 @@ def worker_init_fn(worked_id):
     np.random.seed(worker_seed)
     random.seed(worker_seed)
 
-
 def _unwrap_parallel_model(model):
     while hasattr(model, "module"):
         model = model.module
     return model
 
-
 def log_feature_enhancer_state(model, context="", logger_res=None):
     model = _unwrap_parallel_model(model)
     enhancer = getattr(model, "feature_enhancer", None)
-    if enhancer is None or not hasattr(enhancer, "get_scale_state"):
-        return
-    state = enhancer.get_scale_state()
-    if not state:
+    if enhancer is None:
         return
 
-    max_value = "None" if state["max"] is None else "{:.6f}".format(state["max"])
-    message = (
-        "feature_enhancer.res_scale raw={:.6f} effective={:.6f} max={} "
-        "learnable={} context={}"
-    ).format(
-        state["raw"],
-        state["effective"],
-        max_value,
-        state["learnable"],
-        context,
-    )
+    name = cfg.MODEL.FEATURE_ENHANCER.NAME
+    if hasattr(enhancer, "get_scale_state"):
+        state = enhancer.get_scale_state()
+        max_value = "None" if state["max"] is None else "{:.6f}".format(state["max"])
+        message = (
+            "feature_enhancer.name={} raw={:.6f} effective={:.6f} max={} "
+            "learnable={} context={}"
+        ).format(
+            name,
+            state["raw"],
+            state["effective"],
+            max_value,
+            state["learnable"],
+            context,
+        )
+    else:
+        message = "feature_enhancer.name={} context={}".format(name, context)
+
     print(message)
     if logger_res:
         logger_res.append(message)
@@ -311,11 +313,6 @@ def train_dataset(cfg, args, all_train_sets, all_test_only_sets, set_index, mode
                       )
         lr_scheduler.step()       
        
-        log_feature_enhancer_state(
-            model,
-            context="stage{}_{}_epoch{}".format(set_index + 1, name, epoch + 1),
-            logger_res=logger_res,
-        )
 
         if ((epoch + 1) % args.eval_epoch == 0 or epoch+1==Epochs):
             save_checkpoint({
@@ -336,6 +333,11 @@ def train_dataset(cfg, args, all_train_sets, all_test_only_sets, set_index, mode
                 'mAP': mAP,
             }, True, fpath=osp.join(args.logs_dir, '{}_checkpoint.pth.tar'.format(name)))    
 
+    log_feature_enhancer_state(
+        model,
+        context="stage{}_{}_end".format(set_index + 1, name),
+        logger_res=logger_res,
+    )
     return model, model_trans, model_trans2
 
 def test_model(model, all_train_sets, all_test_sets, set_index, logger_res=None, feats_dir=None):

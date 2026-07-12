@@ -74,7 +74,39 @@ class Backbone(nn.Module):
                 nn.init.constant_(m.weight, 1)
                 nn.init.constant_(m.bias, 0)
 
-def make_model(cfg, num_class, camera_num, view_num,pretrain=True):
+def make_model(*args, **kwargs):
+    cfg = kwargs.pop("cfg", None)
+    num_class = kwargs.pop("num_class", None)
+    camera_num = kwargs.pop("camera_num", 0)
+    view_num = kwargs.pop("view_num", 0)
+    pretrain = kwargs.pop("pretrain", True)
+
+    if args:
+        first = args[0]
+        if hasattr(first, "MODEL") or first is None:
+            cfg = first
+            if len(args) > 1 and num_class is None:
+                num_class = args[1]
+            if len(args) > 2:
+                camera_num = args[2]
+            if len(args) > 3:
+                view_num = args[3]
+            if len(args) > 4:
+                pretrain = args[4]
+        else:
+            if num_class is None:
+                num_class = first
+            if len(args) > 1:
+                camera_num = args[1]
+            if len(args) > 2:
+                view_num = args[2]
+            if len(args) > 3:
+                pretrain = args[3]
+
+    if kwargs:
+        raise TypeError("Unexpected keyword arguments: {}".format(", ".join(sorted(kwargs.keys()))))
+    if num_class is None:
+        raise ValueError("num_class must be provided when building the model.")
     model = Backbone(1, 'BN', False, False, Bottleneck, num_class, [3, 4, 6, 3], cfg=cfg)
     print('===========building ResNet===========')
     if pretrain:

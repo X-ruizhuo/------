@@ -62,6 +62,16 @@ def log_feature_enhancer_state(model, context="", logger_res=None):
     if logger_res:
         logger_res.append(message)
 
+def merge_experiment_config(cfg, config_file):
+    base_config = osp.join(osp.dirname(__file__), 'config', 'base.yml')
+    experiment_config = config_file
+    if not osp.isabs(experiment_config) and not osp.exists(experiment_config):
+        experiment_config = osp.join(osp.dirname(__file__), experiment_config)
+
+    cfg.merge_from_file(base_config)
+    if osp.abspath(experiment_config) != osp.abspath(base_config):
+        cfg.merge_from_file(experiment_config)
+
 def main():
     args = parser.parse_args()
 
@@ -81,8 +91,7 @@ def main():
         torch.backends.cudnn.enabled = False
         torch.backends.cudnn.benchmark = False
 
-
-    cfg.merge_from_file(args.config_file)
+    merge_experiment_config(cfg, args.config_file)
     main_worker(args, cfg)
 
 

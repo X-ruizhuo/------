@@ -9,11 +9,12 @@ from .utils.feature_tools import *
 
 from reid.loss.softmax_loss import KnowledgeDistillation
 from reid.utils.make_loss import make_loss
+from reid.utils.prototype_replay import compute_opcr_loss
 import copy
 
 from reid.metric_learning.distance import cosine_similarity
 class Trainer(object):
-    def __init__(self,cfg,args, model, model_trans, model_trans2, num_classes, writer=None):
+    def __init__(self,cfg,args, model, model_trans, model_trans2, num_classes, writer=None, prototype_bank=None):
         super(Trainer, self).__init__()
         self.cfg = cfg
         self.args = args
@@ -35,6 +36,15 @@ class Trainer(object):
         self.weight_anti = args.weight_anti
         self.weight_discri = args.weight_discri
         self.weight_transx = args.weight_transx
+        self.prototype_bank = prototype_bank
+        self.opcr_cfg = getattr(cfg, 'OPCR', None)
+        self.opcr_enabled = bool(
+            self.opcr_cfg is not None
+            and getattr(self.opcr_cfg, 'ENABLED', False)
+            and self.prototype_bank is not None
+            and len(self.prototype_bank) > 0
+        )
+        self.opcr_rampup_epochs = max(1, int(getattr(self.opcr_cfg, 'RAMPUP_EPOCHS', 10)))
 
     def loss_cr(self, targets_, s_features_old_, trans_old_features_norm_):
 
@@ -82,6 +92,7 @@ class Trainer(object):
         losses_cr = AverageMeter()
         losses_ad = AverageMeter()
         losses_dc = AverageMeter()
+        losses_opcr = AverageMeter()
 
         end = time.time()
 
@@ -153,6 +164,34 @@ class Trainer(object):
                 
                 loss = loss + trans_loss + anti_loss + discri_loss + trans_x_loss
                 
+            if self.opcr_enabled:
+                opcr_sample = self.prototype_bank.sample(
+                    getattr(self.opcr_cfg, 'SAMPLE_SIZE', 128),
+                    device=s_features.device,
+                    balance_by_domain=getattr(self.opcr_cfg, 'BALANCE_BY_DOMAIN', True),
+                )
+                if opcr_sample is not None:
+                    old_proto = opcr_sample['features']
+                    identity_ids = opcr_sample['identity_ids']
+                    if getattr(self.opcr_cfg, 'DETACH_OLD_PROTOTYPE', True):
+                        old_proto = old_proto.detach()
+                    opcr_trans = self.model_trans(old_proto)
+                    opcr_cycle = self.model_trans2(opcr_trans)
+                    opcr_loss, _ = compute_opcr_loss(
+                        old_proto,
+                        opcr_trans,
+                        opcr_cycle,
+                        identity_ids=identity_ids,
+                        temperature=getattr(self.opcr_cfg, 'TEMPERATURE', 0.05),
+                        weight_relation=getattr(self.opcr_cfg, 'WEIGHT_RELATION', 0.5),
+                        weight_cycle=getattr(self.opcr_cfg, 'WEIGHT_CYCLE', 0.1),
+                        weight_separation=getattr(self.opcr_cfg, 'WEIGHT_SEPARATION', 0.0),
+                        separation_margin=getattr(self.opcr_cfg, 'SEPARATION_MARGIN', 0.2),
+                    )
+                    rampup = min(1.0, float(epoch + 1) / float(self.opcr_rampup_epochs))
+                    opcr_loss = opcr_loss * rampup
+                    loss = loss + opcr_loss
+                    losses_opcr.update(opcr_loss.item())
             optimizer.zero_grad()
             loss.backward()
 
@@ -173,6 +212,8 @@ class Trainer(object):
                           global_step=epoch * train_iters + i)
                 self.writer.add_scalar(tag="loss/Loss_dc_{}".format(training_phase), scalar_value=losses_dc.val,
                           global_step=epoch * train_iters + i)
+                self.writer.add_scalar(tag="loss/Loss_opcr_{}".format(training_phase), scalar_value=losses_opcr.val,
+                          global_step=epoch * train_iters + i)
                 self.writer.add_scalar(tag="time/Time_{}".format(training_phase), scalar_value=batch_time.val,
                           global_step=epoch * train_iters + i)
             if (i + 1) == train_iters:
@@ -185,6 +226,7 @@ class Trainer(object):
                       'Loss_cr {:.3f} ({:.3f})\t'
                       'Loss_ad {:.3f} ({:.3f})\t'
                       'Loss_dc {:.3f} ({:.3f})\t'
+                      'Loss_opcr {:.3f} ({:.3f})\t'
                       .format(epoch, i + 1, train_iters,
                               batch_time.val, batch_time.avg,
                               losses_ce.val, losses_ce.avg,
@@ -193,6 +235,7 @@ class Trainer(object):
                               losses_cr.val, losses_cr.avg,
                               losses_ad.val, losses_ad.avg,
                               losses_dc.val, losses_dc.avg,
+                              losses_opcr.val, losses_opcr.avg,
                   ))       
 
     def get_normal_affinity(self,x,Norm=0.1):

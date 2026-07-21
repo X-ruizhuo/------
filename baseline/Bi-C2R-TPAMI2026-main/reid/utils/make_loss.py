@@ -23,11 +23,12 @@ def make_loss(cfg, num_classes):    # modified by gu
         print("label smooth on, numclasses:", num_classes)
 
     if sampler == 'softmax':
-        def loss_func(score, feat, target):
-            return F.cross_entropy(score, target)
+        def loss_func(score, feat, target, target_cam=None):
+            id_loss = F.cross_entropy(score, target)
+            return id_loss, id_loss.new_zeros(())
 
     elif cfg.DATALOADER.SAMPLER == 'softmax_triplet':
-        def loss_func(score, feat, target, target_cam):
+        def loss_func(score, feat, target, target_cam=None):
             if cfg.MODEL.METRIC_LOSS_TYPE == 'triplet':
                 if cfg.MODEL.IF_LABELSMOOTH == 'on':
                     if isinstance(score, list):

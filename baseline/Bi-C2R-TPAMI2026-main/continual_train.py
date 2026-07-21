@@ -13,6 +13,7 @@ from reid.utils.logging import Logger
 from reid.utils.serialization import load_checkpoint, save_checkpoint, copy_state_dict
 from reid.utils.lr_scheduler import WarmupMultiStepLR
 from reid.utils.feature_tools import *
+from reid.utils.prototype_replay import PrototypeBank
 from reid.models.layers import DataParallel
 from reid.models.resnet import make_model, TransNet_adaptive
 from reid.trainer import Trainer
@@ -62,6 +63,39 @@ def log_feature_enhancer_state(model, context="", logger_res=None):
     if logger_res:
         logger_res.append(message)
 
+
+def build_opcr_bank(cfg, args, all_train_sets, set_index, logger_res=None):
+    opcr_cfg = getattr(cfg, 'OPCR', None)
+    if opcr_cfg is None or not getattr(opcr_cfg, 'ENABLED', False):
+        return None
+    if set_index <= 0 or set_index + 1 < int(getattr(opcr_cfg, 'START_STAGE', 2)):
+        return None
+
+    gallery_paths = []
+    for old_index in range(set_index):
+        old_name = all_train_sets[old_index][5]
+        gallery_paths.append(osp.join(args.logs_dir, '{}_features.pth.tar'.format(old_name)))
+
+    prototype_bank = PrototypeBank.from_gallery_files(
+        gallery_paths,
+        prototypes_per_id=getattr(opcr_cfg, 'PROTOTYPES_PER_ID', 1),
+    )
+    if prototype_bank is None or len(prototype_bank) == 0:
+        message = 'OPCR prototype bank skipped: no labeled old gallery features for stage {}'.format(set_index + 1)
+        print(message)
+        if logger_res:
+            logger_res.append(message)
+        return None
+
+    message = 'OPCR prototype bank: prototypes={} files={} stage={}'.format(
+        len(prototype_bank), len(gallery_paths), set_index + 1
+    )
+    print(message)
+    if logger_res:
+        logger_res.append(message)
+    return prototype_bank
+
+
 def merge_experiment_config(cfg, config_file):
     base_config = osp.join(osp.dirname(__file__), 'config', 'base.yml')
     experiment_config = config_file
@@ -104,6 +138,7 @@ def main_worker(args, cfg):
         sys.stdout = Logger(osp.join(log_dir, log_name))
     print("==========\nArgs:{}\n==========".format(args))
     print("Feature enhancer: {}".format(cfg.MODEL.FEATURE_ENHANCER.NAME))
+    print("OPCR enabled: {}".format(getattr(cfg.OPCR, 'ENABLED', False)))
     log_res_name='log_res.txt'
     logger_res=Logger_res(osp.join(args.logs_dir, log_res_name))
     
@@ -190,9 +225,19 @@ def main_worker(args, cfg):
 
         dataset, num_classes, train_loader, test_loader, init_loader, name = all_train_sets[set_index]
         from reid.evaluators import extract_features
-        features, _ = extract_features(model, test_loader, training_phase=set_index+1)
+        features, labels = extract_features(model, test_loader, training_phase=set_index+1)
+        gallery_keys = [fname for fname, _, _, _ in dataset.gallery]
+        query_keys = [fname for fname, _, _, _ in dataset.query]
         print ("Save Features: ", len(features))
-        torch.save({'features':features}, args.logs_dir+name+'_features.pth.tar')
+        torch.save(
+            {
+                'features': features,
+                'labels': labels,
+                'gallery_keys': gallery_keys,
+                'query_keys': query_keys,
+            },
+            args.logs_dir+name+'_features.pth.tar',
+        )
         
         if args.trans_feat and set_index > 0:
             for each_data in training_set[0:set_index]:
@@ -306,7 +351,17 @@ def train_dataset(cfg, args, all_train_sets, all_test_only_sets, set_index, mode
     lr_scheduler = WarmupMultiStepLR(optimizer, Stones, gamma=0.1, warmup_factor=0.01, warmup_iters=args.warmup_step)
     
   
-    trainer = Trainer(cfg, args, model, model_trans, model_trans2, add_num + num_classes,  writer=writer)
+    prototype_bank = build_opcr_bank(cfg, args, all_train_sets, set_index, logger_res=logger_res)
+    trainer = Trainer(
+        cfg,
+        args,
+        model,
+        model_trans,
+        model_trans2,
+        add_num + num_classes,
+        writer=writer,
+        prototype_bank=prototype_bank,
+    )
 
     print('####### starting training on {} #######'.format(name))
     log_feature_enhancer_state(
